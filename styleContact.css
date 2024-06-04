@@ -1,0 +1,115 @@
+body{
+    background-color:#cce5ff ;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 3;
+    padding: 0;
+    max-height: 1000px;
+    max-width: 390px;
+    min-height: 100%;
+      margin-bottom: -50px;
+      overflow-y: auto; 
+}
+.logo1{
+    position: relative;
+    top: -60px;
+}
+
+.naslovAboutUs{
+    position: relative;
+    left:90px;
+    top: -50px;
+    font-size: 30px;
+}
+.naslovContact{
+    position: relative;
+    left:150px;
+    top: -50px;
+    font-size: 30px;
+}
+nav {
+    background-color: #5ca2e49a;
+    padding: 10px 0;
+    position: relative;
+    top: -110px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+  
+  li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  li:last-child {
+    margin-right: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 5px 10px;
+  }
+  
+  a:hover {
+    background-color: #ddd7d7;
+    border-radius: 8px;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+  .container {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  .footer {
+    background-color: #333; 
+    color: #fff; 
+    padding: 20px; 
+    text-align: center; 
+    
+    width: 360px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  
+  .footer a {
+    color: #fff; 
+    text-decoration: none; 
+  }
+  
+  .footer a:hover {
+    text-decoration: underline; 
+  }

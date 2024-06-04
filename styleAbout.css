@@ -1,0 +1,140 @@
+body{
+    background-color:#cce5ff ;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 3;
+    padding: 0;
+  height: 100%;
+    max-width: 390px;
+}
+.logo1{
+    position: relative;
+    top: -60px;
+}
+
+.naslovAboutUs{
+    position: relative;
+    left:90px;
+    top: -50px;
+    font-size: 30px;
+}
+.naslovContact{
+    position: relative;
+    left:150px;
+    top: -50px;
+    font-size: 30px;
+}
+.textAboutUs{
+    position: relative;
+    top: -20px;
+    font-size: 18px;
+    text-align: justify;
+}
+.maltekst{
+    position: relative;
+    top: -1px;
+    font-size: 18px;
+    
+}
+nav {
+    background-color: #5ca2e49a;
+    padding: 10px 0;
+    position: relative;
+    top: -110px;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+  
+  li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  li:last-child {
+    margin-right: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 5px 10px;
+  }
+  
+  a:hover {
+    background-color: #ddd7d7;
+    border-radius: 8px;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+.linkPremier{
+    color: rgb(7, 47, 133);
+}
+.linkPremier:hover{
+    color:purple ;
+    background-color:rgb(70, 226, 174) ;
+}
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  .footer {
+    background-color: #333; 
+    color: #fff; 
+    padding: 20px; 
+    text-align: center; 
+    
+    width: 360px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  
+  .footer a {
+    color: #fff; 
+    text-decoration: none; 
+  }
+  
+  .footer a:hover {
+    text-decoration: underline; 
+  }
+  .slika1{
+    position: relative;
+    height: 200px;
+    width: 350px;
+    left: 20px;
+    top: 20px;
+
+  }
