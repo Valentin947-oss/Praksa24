@@ -68,6 +68,7 @@ nav {
   }
   .form-group {
     margin-bottom: 20px;
+    padding-right:20px
   }
   
   input[type="text"],
