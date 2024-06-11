@@ -395,16 +395,16 @@ th {
   transition: 0.3s;
 }
 
-/* Media queries for responsiveness */
+
 @media screen and (max-width: 768px) {
   .team img {
-      width: 80px; /* Adjust for smaller screens */
+      width: 80px;
   }
 }
 
 @media screen and (max-width: 576px) {
   .team img {
-      width: 60px; /* Adjust for even smaller screens */
+      width: 60px; 
   }
 }
 .tim2425{
