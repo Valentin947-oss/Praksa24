@@ -27,22 +27,22 @@
         $username="root";
         $password="";
         $database="rezultati";
-// Connect to MySQL
+
 $conn =new mysqli($servername, $username, $password, $database);
 
-// Check connection
+
 if (!$conn) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Query to retrieve team standings data from the database
+
 $sql = "SELECT teams.team_name, matches.round_number,statisticss.wins,statisticss.draws,statisticss.losses,teams.points
  FROM teams, matches,statisticss  ";
 $result = $conn->query($sql);
 $number=1;
 if(!$result)
 die("Ivalied query");
-// Populate the HTML table with data
+
 echo "
  <tr>
     <th>#</th>
@@ -57,7 +57,7 @@ echo "
     <th>POINTS</th>
 </tr>";
 
-$number = 1; // Initialize counter
+$number = 1; 
 
 while (($row = $result->fetch_assoc()) && ($number <= 20)) {
     echo "
