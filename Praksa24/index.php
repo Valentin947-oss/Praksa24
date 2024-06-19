@@ -14,7 +14,7 @@
         <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
         <li><a href="AboutUs.html" class="nvy">About Us</a></li>
         <li><a href="Contact.html" class="nvy">Contact</a></li>
-        <li><a href="index.php" class="nvy">2024/25</a></li>
+        
       </ul>
     </nav>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
