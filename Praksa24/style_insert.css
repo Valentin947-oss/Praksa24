@@ -1,0 +1,57 @@
+body{
+  background-color:#cce5ff ;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 3;
+  padding: 0; 
+  max-width: auto;
+  height: 100%;
+}
+.container {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .poraka{
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 20px;
+    padding-right: 15px;
+    align-items: center;
+    align-content: center;
+  }
+  
+  input[type="date"],
+  input[type="time"],
+  input[type="number"] {
+    align-content: center;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  } 
+  button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+  }
+  
+  button:hover {
+    background-color: #555;
+    transition: background-color 0.3s ease;
+  }
+  
+
+  
+.footer a {
+    color: #fff; 
+    text-decoration: none; 
+}
+  
+.footer a:hover {
+    text-decoration: underline; 
+}
