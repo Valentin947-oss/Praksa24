@@ -80,5 +80,10 @@
         
         <button type="submit">Add Item</button>
     </form>
+    <footer class="footer">
+        All Rights Reserved - 2024 <br>
+        
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
 </body>
 </html>
