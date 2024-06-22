@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixtures | Premier League</title>
+    <link rel="icon" type="image/x-icon" href="Images/logobrowser.jpg">
+    <link rel="stylesheet" href="stylee.css">
+</head>
+<body>
+    <img class="logo1" src="Images/logoANG.png" alt="">
+    <nav>
+    <ul>
+        <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
+        <li><a href="AboutUs.html" class="nvy">About Us</a></li>
+        <li><a href="Contact.html" class="nvy">Contact</a></li>
+        <li><a href="index.php" class="nvy">2024/25</a></li>
+        <li><a href="Insert_team.php" class="nvy">Insert Match</a></li>
+        
+      </ul>
+    </nav>
+    <h1 class="naslov24-25">Results so far season 2024/25</h1>
+    <table>
+        <thead>
+           
+        </thead>
+        <tbody>
+        <?php
+        $servername="localhost";
+        $username="root";
+        $password="";
+        $database="rezultati";
+
+$conn =new mysqli($servername, $username, $password, $database);
+
+
+if (!$conn) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$sql = "SELECT
+    t.team_name,
+    COUNT(m.match_id) AS rounds_played,
+    COALESCE(s.wins, 0) AS wins,
+    COALESCE(s.draws, 0) AS draws,
+    COALESCE(s.losses, 0) AS losses,
+    SUM(CASE WHEN m.home_team_id = t.team_id THEN m.home_team_score ELSE m.away_team_score END) AS goals_scored,
+    SUM(CASE WHEN m.home_team_id = t.team_id THEN m.away_team_score ELSE m.home_team_score END) AS goals_conceded,
+    CASE 
+        WHEN SUM(CASE WHEN m.home_team_id = t.team_id THEN m.home_team_score ELSE m.away_team_score END) - 
+             SUM(CASE WHEN m.home_team_id = t.team_id THEN m.away_team_score ELSE m.home_team_score END) >= 0
+        THEN SUM(CASE WHEN m.home_team_id = t.team_id THEN m.home_team_score ELSE m.away_team_score END) - 
+             SUM(CASE WHEN m.home_team_id = t.team_id THEN m.away_team_score ELSE m.home_team_score END)
+        ELSE CONCAT('-', ABS(SUM(CASE WHEN m.home_team_id = t.team_id THEN m.home_team_score ELSE m.away_team_score END)
+                          - SUM(CASE WHEN m.home_team_id = t.team_id THEN m.away_team_score ELSE m.home_team_score END)))
+    END AS goal_difference,
+    COALESCE(s.wins, 0) * 3 + COALESCE(s.draws, 0) AS points
+FROM Teams t
+LEFT JOIN Statisticss s ON t.team_id = s.team_id
+LEFT JOIN Matches m ON t.team_id = m.home_team_id OR t.team_id = m.away_team_id
+GROUP BY t.team_id, t.team_name, s.wins, s.draws, s.losses
+ORDER BY points DESC, goal_difference DESC;";
+$result = $conn->query($sql);
+$number=1;
+if(!$result)
+die("Ivalied query");
+
+echo "
+ <tr>
+    <th>#</th>
+    <th></th>
+    <th>TEAM</th>
+    <th>GAMES</th>
+    <th>WINS</th>
+    <th>LOSSES</th>
+    <th>DRAWS</th>
+    <th>G_SCORED</th>
+    <th>G_CONCEDED</th>
+    <th>GD</th>
+    <th>POINTS</th>
+</tr>";
+
+$number = 1; 
+
+while (($row = $result->fetch_assoc()) && ($number <= 20)) {
+    echo "
+ <tr>
+   <td>
+    $number.
+   </td>
+   <td>
+   </td>
+   <td>
+     {$row['team_name']}
+   </td>
+   <td>
+    {$row['rounds_played']}
+   </td>
+   <td>
+    {$row['wins']}
+   </td>
+   <td>
+    {$row['losses']}
+   </td>
+   <td>
+    {$row['draws']}
+   </td>
+   <td>
+    {$row['goals_scored']}
+   </td>
+   <td>
+    {$row['goals_conceded']}
+   </td>
+   <td>
+    {$row['goal_difference']}
+   </td>
+    <td>
+    {$row['points']}
+   </td>
+</tr>
+ ";
+
+    $number++;
+}
+?>
+</table>
+
+        <p><div class="square LS"></div>Qualified - Champions League (Group Stage:) 
+        <p><div class="square LE"></div>Qualified - Europe League (Group Stage:)
+        <p><div class="square LK"></div>Qualified - Europe Conferences League (Group Stage:) 
+        <p><div class="square ISP"></div>Relegation - Championship 
+        <p>If teams have the same number of points at the end<br> of the season, 
+            the placement is decided by <br>goal difference.</p>
+    
+
+            <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "rezultati";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT team_id, team_name FROM Teams";
+$result = $conn->query($sql);
+
+if (!$result) {
+    die("Invalid query: " . $conn->error);
+}
+
+?>
+
+   
+    <style>
+        /* CSS styles for action buttons */
+        .edit-button,
+        .delete-button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover,
+        .delete-button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+        }
+
+        .delete-button:hover {
+            background-color: #da190b;
+        }
+    </style>
+
+    <h2>Teams</h2>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Team ID</th>
+            <th>Team Name</th>
+            <th>Actions</th>
+        </tr>
+        <?php
+        $number = 1;
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>{$number}</td>";
+            echo "<td>{$row['team_id']}</td>";
+            echo "<td>{$row['team_name']}</td>";
+            echo "<td>
+                    <a href=\"edit_team.php?team_id={$row['team_id']}\" class=\"edit-button\">Edit</a>
+                    <a href=\"delete_team.php?team_id={$row['team_id']}\" class=\"delete-button\">Delete</a>
+                  </td>";
+            echo "</tr>";
+            $number++;
+        }
+        ?>
+    </table>
+
+
+<?php
+$conn->close();
+?>  
+    <?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "rezultati";
+
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$sql = "SELECT
+            m.match_id,
+            home.team_name AS home_team,
+            away.team_name AS away_team,
+            m.home_team_score,
+            m.away_team_score,
+            m.match_date,
+            m.match_time
+        FROM Matches m
+        INNER JOIN Teams home ON m.home_team_id = home.team_id
+        INNER JOIN Teams away ON m.away_team_id = away.team_id
+        ORDER BY m.match_date, m.match_time";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    
+    $weekCount = 0; 
+    $previousWeek = 0; 
+    
+    echo '<div class="Fixcontainer">';
+    
+    while ($row = $result->fetch_assoc()) {
+        // kalkulira kolku kola ima vrz osnova na datumot i satot
+        $matchDateTime = strtotime($row['match_date'] . ' ' . $row['match_time']);
+        $weekNumber = date('W', $matchDateTime);
+        
+        // generira  kola
+        if ($weekNumber != $previousWeek && $weekCount < 38) {
+            $previousWeek = $weekNumber;
+            $weekCount++;
+            echo '</div>'; // zatvora kolo
+            echo '<div class="fixture">';
+            echo "<h2>Week $weekCount</h2>";
+        }
+        
+        
+        $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
+        
+        
+        echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
+    }
+    
+    echo '</div>'; 
+    echo '</div>';  
+} else {
+    echo "0 results";
+}
+
+$conn->close();
+?>
+       
+        <footer class="footer">
+            All Rights Reserved - 2024 <br>
+            
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+</body>
+</html>
