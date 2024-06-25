@@ -108,28 +108,39 @@ if (!$result) {
 
 
     <?php
-    if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'])) {
-        $team_id = $_GET['team_id'];
+if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'])) {
+    $team_id = $_GET['team_id'];
 
-        
-        $sql = "SELECT team_name FROM Teams WHERE team_id = $team_id";
-        $result = $conn->query($sql);
+    
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $team_name = $row['team_name'];
-    ?>
-            <div class="container">
-                <h2>Edit Team</h2>
-                <form action="insert_team.php?action=edit&team_id=<?php echo $team_id; ?>" method="post">
-                    <input type="text" name="team_name" value="<?php echo $team_name; ?>" required>
-                    <button type="submit" name="edit_team">Update Team</button>
-                </form>
-            </div>
-    <?php
-        }
+    
+    $stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
+    $stmt->bind_param("i", $team_id); 
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $team_name = $row['team_name'];
+?>
+        <div class="container">
+            <h2>Edit Team</h2>
+            <form action="insert_team.php?action=edit&team_id=<?php echo htmlspecialchars($team_id); ?>" method="post">
+                <input type="text" name="team_name" value="<?php echo htmlspecialchars($team_name); ?>" required>
+                <button type="submit" name="edit_team">Update Team</button>
+            </form>
+        </div>
+<?php
+    } else {
+        echo "Team not found.";
     }
-    ?>
+
+    
+    $stmt->close();
+} else {
+    echo "Invalid request.";
+}
+?>
 
 
 

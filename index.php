@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="Images/logobrowser.jpg">
     <link rel="stylesheet" href="stylee.css">
     <link rel="stylesheet" href="style_insert.css">
+    <script src="js.js"></script>
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
