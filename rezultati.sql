@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2024 at 03:14 PM
+-- Generation Time: Jun 25, 2024 at 07:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -35,8 +35,7 @@ CREATE TABLE `matches` (
   `home_team_score` int(11) NOT NULL,
   `away_team_score` int(11) NOT NULL,
   `match_time` time DEFAULT NULL,
-  `match_date` date DEFAULT NULL,
-   UNIQUE KEY `unique_match_id` (`match_id`)
+  `match_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -96,34 +95,35 @@ CREATE TABLE `statisticss` (
   `team_id` int(50) NOT NULL,
   `wins` int(11) DEFAULT 0,
   `losses` int(11) DEFAULT 0,
-  `draws` int(11) DEFAULT 0
+  `draws` int(11) DEFAULT 0,
+  `points` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `statisticss`
 --
 
-INSERT INTO `statisticss` (`stat_id`, `team_id`, `wins`, `losses`, `draws`) VALUES
-(1, 1, 2, 1, 1),
-(2, 2, 3, 0, 1),
-(3, 3, 3, 1, 0),
-(4, 4, 1, 0, 3),
-(5, 5, 3, 0, 1),
-(6, 6, 2, 1, 1),
-(7, 7, 3, 1, 0),
-(8, 8, 2, 0, 2),
-(9, 9, 0, 3, 1),
-(10, 10, 3, 0, 1),
-(11, 11, 1, 3, 0),
-(12, 12, 1, 2, 1),
-(13, 13, 0, 3, 1),
-(14, 14, 0, 1, 3),
-(15, 15, 0, 3, 1),
-(16, 16, 0, 3, 1),
-(17, 17, 0, 2, 2),
-(18, 18, 0, 2, 2),
-(19, 19, 0, 1, 3),
-(20, 20, 0, 2, 2);
+INSERT INTO `statisticss` (`stat_id`, `team_id`, `wins`, `losses`, `draws`, `points`) VALUES
+(1, 1, 2, 1, 1, NULL),
+(2, 2, 3, 0, 1, NULL),
+(3, 3, 3, 1, 0, NULL),
+(4, 4, 1, 0, 3, NULL),
+(5, 5, 3, 0, 1, NULL),
+(6, 6, 2, 1, 1, NULL),
+(7, 7, 3, 1, 0, NULL),
+(8, 8, 2, 0, 2, NULL),
+(9, 9, 0, 3, 1, NULL),
+(10, 10, 3, 0, 1, NULL),
+(11, 11, 1, 3, 0, NULL),
+(12, 12, 1, 2, 1, NULL),
+(13, 13, 0, 3, 1, NULL),
+(14, 14, 0, 1, 3, NULL),
+(15, 15, 0, 3, 1, NULL),
+(16, 16, 0, 3, 1, NULL),
+(17, 17, 0, 2, 2, NULL),
+(18, 18, 0, 2, 2, NULL),
+(19, 19, 0, 1, 3, NULL),
+(20, 20, 0, 2, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -133,36 +133,34 @@ INSERT INTO `statisticss` (`stat_id`, `team_id`, `wins`, `losses`, `draws`) VALU
 
 CREATE TABLE `teams` (
   `team_id` int(50) NOT NULL,
-  `team_name` varchar(100) NOT NULL,
-  `points` int(11) DEFAULT 0,
-  `goals` varchar(50) DEFAULT NULL
+  `team_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `teams`
 --
 
-INSERT INTO `teams` (`team_id`, `team_name`, `points`, `goals`) VALUES
-(1, 'Man. City', 0, NULL),
-(2, 'Liverpool', 0, NULL),
-(3, 'Chelsea', 0, NULL),
-(4, 'Man. Utd', 0, NULL),
-(5, 'Tottenham', 0, NULL),
-(6, 'Aston Villa', 0, NULL),
-(7, 'Southampton', 0, NULL),
-(8, 'Wolves', 0, NULL),
-(9, 'Ipswich ', 0, NULL),
-(10, 'West Ham', 0, NULL),
-(11, 'Crystal Palace', 0, NULL),
-(12, 'Leicester', 0, NULL),
-(13, 'Nott\'m Forest', 0, NULL),
-(14, 'Fulham', 0, NULL),
-(15, 'Bournemount', 0, NULL),
-(16, 'Arsenal', 0, NULL),
-(17, 'Newcastle', 0, NULL),
-(18, 'Brighton', 0, NULL),
-(19, 'Everton', 0, NULL),
-(20, 'Brentford', 0, NULL);
+INSERT INTO `teams` (`team_id`, `team_name`) VALUES
+(1, 'Man. City'),
+(2, 'Liverpool'),
+(3, 'Chelsea'),
+(4, 'Man Utd'),
+(5, 'Tottenham'),
+(6, 'Aston Villa'),
+(7, 'Southampton'),
+(8, 'Wolves'),
+(9, 'Ipswich '),
+(10, 'West Ham'),
+(11, 'Crystal Palace'),
+(12, 'Leicester'),
+(13, 'Nott\'m Forest'),
+(14, 'Fulham'),
+(15, 'Bournemount'),
+(16, 'Arsenal'),
+(17, 'Newcastle'),
+(18, 'Brighton'),
+(19, 'Everton'),
+(20, 'Brentford');
 
 --
 -- Indexes for dumped tables
@@ -174,6 +172,9 @@ INSERT INTO `teams` (`team_id`, `team_name`, `points`, `goals`) VALUES
 ALTER TABLE `matches`
   ADD PRIMARY KEY (`match_id`),
   ADD UNIQUE KEY `match_id` (`match_id`),
+  ADD UNIQUE KEY `match_id_3` (`match_id`),
+  ADD UNIQUE KEY `match_id_4` (`match_id`),
+  ADD UNIQUE KEY `unique_match_id` (`match_id`),
   ADD KEY `match_id_2` (`match_id`),
   ADD KEY `home_team_id` (`home_team_id`),
   ADD KEY `away_team_id` (`away_team_id`);
@@ -190,6 +191,16 @@ ALTER TABLE `statisticss`
 --
 ALTER TABLE `teams`
   ADD PRIMARY KEY (`team_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `teams`
+--
+ALTER TABLE `teams`
+  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
