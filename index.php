@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,20 +32,18 @@
            
         </thead>
         <tbody>
-        <?php
-        $servername="localhost";
-        $username="root";
-        $password="";
-        $database="rezultati";
+<?php
+ $servername="localhost";
+ $username="root";
+ $password="";
+ $database="rezultati";
 
 $conn =new mysqli($servername, $username, $password, $database);
 
 
 if (!$conn) {
-    die("Connection failed: " . $conn->connect_error);
+die("Connection failed: " . $conn->connect_error);
 }
-
-
 $sql = "SELECT
     t.team_name,
     COUNT(m.match_id) AS rounds_played,
@@ -142,20 +141,6 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
 
  
     <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "rezultati";
-
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 
 $sql = "SELECT
             m.match_id,

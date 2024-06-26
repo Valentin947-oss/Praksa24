@@ -1,15 +1,15 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "rezultati";
+ $servername="localhost";
+ $username="root";
+ $password="";
+ $database="rezultati";
 
-$conn = new mysqli($servername, $username, $password, $database);
+$conn =new mysqli($servername, $username, $password, $database);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+
+if (!$conn) {
+die("Connection failed: " . $conn->connect_error);
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['add_team'])) {
         $team_name = $_POST['team_name'];
