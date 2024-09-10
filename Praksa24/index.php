@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,39 +7,43 @@
     <title>Fixtures | Premier League</title>
     <link rel="icon" type="image/x-icon" href="Images/logobrowser.jpg">
     <link rel="stylesheet" href="stylee.css">
+    <link rel="stylesheet" href="style_insert.css">
+    <script src="js.js"></script>
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
     <nav>
+    
     <ul>
         <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
         <li><a href="AboutUs.html" class="nvy">About Us</a></li>
         <li><a href="Contact.html" class="nvy">Contact</a></li>
         <li><a href="index.php" class="nvy">2024/25</a></li>
-        <li><a href="Insert_team.php" class="nvy">Insert Match</a></li>
-        
-      </ul>
-    </nav>
+        <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
+        <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+    </ul>
+    
+</nav>
+<br>
+<br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
     <table>
         <thead>
            
         </thead>
         <tbody>
-        <?php
-        $servername="localhost";
-        $username="root";
-        $password="";
-        $database="rezultati";
+<?php
+ $servername="localhost";
+ $username="root";
+ $password="";
+ $database="rezultati";
 
 $conn =new mysqli($servername, $username, $password, $database);
 
 
 if (!$conn) {
-    die("Connection failed: " . $conn->connect_error);
+die("Connection failed: " . $conn->connect_error);
 }
-
-
 $sql = "SELECT
     t.team_name,
     COUNT(m.match_id) AS rounds_played,
@@ -73,23 +78,40 @@ echo "
     <th>TEAM</th>
     <th>GAMES</th>
     <th>WINS</th>
-    <th>LOSSES</th>
     <th>DRAWS</th>
+    <th>LOSSES</th>
     <th>G_SCORED</th>
-    <th>G_CONCEDED</th>
-    <th>GD</th>
+    <th>G_CONC</th>
+    <th>GDF</th>
     <th>POINTS</th>
 </tr>";
 
 $number = 1; 
 
 while (($row = $result->fetch_assoc()) && ($number <= 20)) {
+    if ($number <= 4) {
+        $backgroundClass = 'aquamarine-th';
+        $squareClass = 'square LS';
+    } elseif ($number == 5 || $number == 6) {
+        $backgroundClass = 'brown-th';
+        $squareClass = 'square LE';
+    } elseif ($number == 7) {
+        $backgroundClass = 'dark-yellow-th';
+        $squareClass = 'square LK';
+    } elseif ($number == 18 || $number == 19 || $number == 20) {
+        $backgroundClass ='red-th';
+        $squareClass='square ISP';
+    } else {
+        $backgroundClass = 'default-th';
+        $squareClass = '';
+    }
     echo "
  <tr>
+    <td class='$backgroundClass'>
+        <div class='square1 $squareClass'>$number.</div>
+    </td>
    <td>
-    $number.
-   </td>
-   <td>
+    
    </td>
    <td>
      {$row['team_name']}
@@ -100,11 +122,11 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
    <td>
     {$row['wins']}
    </td>
-   <td>
-    {$row['losses']}
+    <td>
+    {$row['draws']}
    </td>
    <td>
-    {$row['draws']}
+    {$row['losses']}
    </td>
    <td>
     {$row['goals_scored']}
@@ -126,7 +148,6 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
 ?>
 </table>
 
-
         <p><div class="square LS"></div>Qualified - Champions League (Group Stage:) 
         <p><div class="square LE"></div>Qualified - Europe League (Group Stage:)
         <p><div class="square LK"></div>Qualified - Europe Conferences League (Group Stage:) 
@@ -134,21 +155,9 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         <p>If teams have the same number of points at the end<br> of the season, 
             the placement is decided by <br>goal difference.</p>
     
+
+ 
     <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "rezultati";
-
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 
 $sql = "SELECT
             m.match_id,
