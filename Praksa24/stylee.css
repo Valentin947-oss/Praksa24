@@ -456,7 +456,7 @@ th {
   text-align: center;
   border-radius: 50%;
   font-weight: bold;
-  color: white; 
+  color: black; 
 }
 
 .aquamarine-th {
@@ -470,6 +470,9 @@ th {
   font-weight: bold;
 }
 .default-th {
-  background-color: #f9f9f9; /* Light gray as default */
-  color: black; /* Ensure text is visible */
+  background-color: black; 
+  color: black; 
+}
+.black-text {
+  color: black;
 }

@@ -46,6 +46,7 @@ die("Connection failed: " . $conn->connect_error);
 }
 $sql = "SELECT
     t.team_name,
+    t.logo_path,  
     COUNT(m.match_id) AS rounds_played,
     COALESCE(s.wins, 0) AS wins,
     COALESCE(s.draws, 0) AS draws,
@@ -64,7 +65,7 @@ $sql = "SELECT
 FROM Teams t
 LEFT JOIN Statisticss s ON t.team_id = s.team_id
 LEFT JOIN Matches m ON t.team_id = m.home_team_id OR t.team_id = m.away_team_id
-GROUP BY t.team_id, t.team_name, s.wins, s.draws, s.losses
+GROUP BY t.team_id, t.team_name, t.logo_path, s.wins, s.draws, s.losses
 ORDER BY points DESC, goal_difference DESC;";
 $result = $conn->query($sql);
 $number=1;
@@ -103,17 +104,24 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         $squareClass='square ISP';
     } else {
         $backgroundClass = 'default-th';
-        $squareClass = '';
+        $squareClass = 'square1';
     }
+    if ($number >= 8 && $number <= 17) {
+        $textColorClass = 'black-text';
+    } else {
+        $textColorClass = ''; 
+    }
+
+    $logoPath = htmlspecialchars($row['logo_path']);
     echo "
  <tr>
     <td class='$backgroundClass'>
-        <div class='square1 $squareClass'>$number.</div>
+        <div class='square1 $squareClass'>$number</div>
     </td>
-   <td>
-    
-   </td>
-   <td>
+    <td>
+    <img src='' alt='Logo' style='width: 50px; height: 50px;'> 
+    </td>
+    <td>
      {$row['team_name']}
    </td>
    <td>
@@ -162,7 +170,9 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
 $sql = "SELECT
             m.match_id,
             home.team_name AS home_team,
+            home.logo_path AS home_logo,  
             away.team_name AS away_team,
+            away.logo_path AS away_logo,  
             m.home_team_score,
             m.away_team_score,
             m.match_date,
@@ -197,9 +207,11 @@ if ($result->num_rows > 0) {
         
         
         $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
+        $homeLogoPath = htmlspecialchars($row['home_logo']);
+        $awayLogoPath = htmlspecialchars($row['away_logo']);
         
-        
-        echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
+        //echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
+        echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}</p>";
     }
     
     echo '</div>'; 
