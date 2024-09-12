@@ -113,7 +113,7 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         $textColorClass = ''; 
     }
 
-    $logoPath = htmlspecialchars($row['logo_path']);
+    $logoPath = "Images/".htmlspecialchars($row['logo_path']);
     echo "
  <tr>
     <td class=''>
@@ -208,8 +208,8 @@ if ($result->num_rows > 0) {
         
         
         $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
-        $homeLogoPath = htmlspecialchars($row['home_logo']);
-        $awayLogoPath = htmlspecialchars($row['away_logo']);
+        $homeLogoPath = "Images/".htmlspecialchars($row['home_logo']);
+        $awayLogoPath = "Images/".htmlspecialchars($row['away_logo']);
         
         //echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
         echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}</p>";
