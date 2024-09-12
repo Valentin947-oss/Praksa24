@@ -120,7 +120,7 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         <div class='square $squareClass'>$number</div>
     </td>
     <td>
-    <img src='' alt='Logo' style='width: 50px; height: 50px;'> 
+    <img src='$logoPath' alt='Logo' style='width: 50px; height: 50px;'> 
     </td>
     <td>
      {$row['team_name']}
