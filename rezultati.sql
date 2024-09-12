@@ -154,7 +154,7 @@ INSERT INTO `teams` (`team_id`, `team_name`, `logo_path`) VALUES
 (10, 'West Ham', 'Images/whu.jpg'),
 (11, 'Crystal Palace', 'Images/cry.jpg'),
 (12, 'Leicester', 'Images/lei.jfif'),
-(13, 'Nott\'m Forest', 'Images/nfo.jpg'),
+(13, 'Nottm Forest', 'Images/nfo.jpg'),
 (14, 'Fulham', 'Images/ful.jpg'),
 (15, 'Bournemount', 'Images/bmo.jpg'),
 (16, 'Arsenal', 'Images/ars1.jpg'),
