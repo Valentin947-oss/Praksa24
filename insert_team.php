@@ -105,7 +105,13 @@ if (!$result) {
             <button type="submit" name="add_team">Add Team</button>
         </form>
     </div>
-
+    <div class="container">
+        <h2>Add New Team Logo</h2>
+        <form action="insert_team.php" method="post">
+            <input type="text" name="team_name" placeholder="Enter url adress" required>
+            <button type="submit" name="add_team">Add Team Logo</button>
+        </form>
+    </div>
 
     <?php
 if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'])) {
