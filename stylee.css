@@ -133,7 +133,6 @@ th {
     margin: 0;
     padding: 0;
     text-align: right;
-    
   }
   
   li {
@@ -448,4 +447,32 @@ th {
 .raspored:hover{
   color:purple ;
   background-color:rgb(70, 226, 174) ;
+}
+.square1 {
+  display: inline-block;
+  width: 20px; 
+  height: 20px; 
+  line-height: 20px; 
+  text-align: center;
+  border-radius: 50%;
+  font-weight: bold;
+  color: black; 
+}
+
+.aquamarine-th {
+  background-color: aquamarine;
+  color: black; 
+  font-weight: bold;
+}
+.red-th{
+  background-color: red;
+  color: #fff;
+  font-weight: bold;
+}
+.default-th {
+  background-color: black; 
+  color: black; 
+}
+.black-text {
+  color: black;
 }

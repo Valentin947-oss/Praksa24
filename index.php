@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,39 +7,44 @@
     <title>Fixtures | Premier League</title>
     <link rel="icon" type="image/x-icon" href="Images/logobrowser.jpg">
     <link rel="stylesheet" href="stylee.css">
+    <link rel="stylesheet" href="style_insert.css">
+    <script src="js.js"></script>
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
     <nav>
-    <ul>
-        <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
-        <li><a href="AboutUs.html" class="nvy">About Us</a></li>
-        <li><a href="Contact.html" class="nvy">Contact</a></li>
-        
-      </ul>
+        <ul>
+            <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
+            <li><a href="AboutUs.html" class="nvy">About Us</a></li>
+            <li><a href="Contact.html" class="nvy">Contact</a></li>
+            <li><a href="index.php" class="nvy">2024/25</a></li>
+            <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
+            <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+        </ul>
     </nav>
+<br>
+<br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
     <table>
         <thead>
            
         </thead>
         <tbody>
-        <?php
-        $servername="localhost";
-        $username="root";
-        $password="";
-        $database="rezultati";
+<?php
+ $servername="localhost";
+ $username="root";
+ $password="";
+ $database="rezultati";
 
 $conn =new mysqli($servername, $username, $password, $database);
 
 
 if (!$conn) {
-    die("Connection failed: " . $conn->connect_error);
+die("Connection failed: " . $conn->connect_error);
 }
-
-
 $sql = "SELECT
     t.team_name,
+    t.logo_path,  
     COUNT(m.match_id) AS rounds_played,
     COALESCE(s.wins, 0) AS wins,
     COALESCE(s.draws, 0) AS draws,
@@ -57,7 +63,7 @@ $sql = "SELECT
 FROM Teams t
 LEFT JOIN Statisticss s ON t.team_id = s.team_id
 LEFT JOIN Matches m ON t.team_id = m.home_team_id OR t.team_id = m.away_team_id
-GROUP BY t.team_id, t.team_name, s.wins, s.draws, s.losses
+GROUP BY t.team_id, t.team_name, t.logo_path, s.wins, s.draws, s.losses
 ORDER BY points DESC, goal_difference DESC;";
 $result = $conn->query($sql);
 $number=1;
@@ -71,25 +77,49 @@ echo "
     <th>TEAM</th>
     <th>GAMES</th>
     <th>WINS</th>
-    <th>LOSSES</th>
     <th>DRAWS</th>
+    <th>LOSSES</th>
     <th>G_SCORED</th>
-    <th>G_CONCEDED</th>
-    <th>GD</th>
+    <th>G_CONC</th>
+    <th>GDF</th>
     <th>POINTS</th>
 </tr>";
 
 $number = 1; 
 
 while (($row = $result->fetch_assoc()) && ($number <= 20)) {
+    if ($number <= 4) {
+        $backgroundClass = 'aquamarine-th';
+        $squareClass = 'square LS';
+    } elseif ($number == 5 || $number == 6) {
+        $backgroundClass = 'brown-th';
+        $squareClass = 'square LE';
+    } elseif ($number == 7) {
+        $backgroundClass = 'dark-yellow-th';
+        $squareClass = 'square LK';
+    } elseif ($number == 18 || $number == 19 || $number == 20) {
+        $backgroundClass ='red-th';
+        $squareClass='square ISP';
+    } else {
+        $backgroundClass = 'default-th';
+        $squareClass = 'square1';
+    }
+    if ($number >= 8 && $number <= 17) {
+        $textColorClass = 'black-text';
+    } else {
+        $textColorClass = ''; 
+    }
+
+    $logoPath = htmlspecialchars($row['logo_path']);
     echo "
  <tr>
-   <td>
-    $number.
-   </td>
-   <td>
-   </td>
-   <td>
+    <td class='$backgroundClass'>
+        <div class='square1 $squareClass'>$number</div>
+    </td>
+    <td>
+    <img src='' alt='Logo' style='width: 50px; height: 50px;'> 
+    </td>
+    <td>
      {$row['team_name']}
    </td>
    <td>
@@ -98,11 +128,11 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
    <td>
     {$row['wins']}
    </td>
-   <td>
-    {$row['losses']}
+    <td>
+    {$row['draws']}
    </td>
    <td>
-    {$row['draws']}
+    {$row['losses']}
    </td>
    <td>
     {$row['goals_scored']}
@@ -124,7 +154,6 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
 ?>
 </table>
 
-
         <p><div class="square LS"></div>Qualified - Champions League (Group Stage:) 
         <p><div class="square LE"></div>Qualified - Europe League (Group Stage:)
         <p><div class="square LK"></div>Qualified - Europe Conferences League (Group Stage:) 
@@ -132,26 +161,16 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         <p>If teams have the same number of points at the end<br> of the season, 
             the placement is decided by <br>goal difference.</p>
     
+
+ 
     <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "rezultati";
-
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 
 $sql = "SELECT
             m.match_id,
             home.team_name AS home_team,
+            home.logo_path AS home_logo,  
             away.team_name AS away_team,
+            away.logo_path AS away_logo,  
             m.home_team_score,
             m.away_team_score,
             m.match_date,
@@ -186,9 +205,11 @@ if ($result->num_rows > 0) {
         
         
         $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
+        $homeLogoPath = htmlspecialchars($row['home_logo']);
+        $awayLogoPath = htmlspecialchars($row['away_logo']);
         
-        
-        echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
+        //echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
+        echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}</p>";
     }
     
     echo '</div>'; 
