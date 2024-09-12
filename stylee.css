@@ -448,3 +448,15 @@ th {
   color:purple ;
   background-color:rgb(70, 226, 174) ;
 }
+.square1 {
+  display: inline-block;
+  width: 20px; 
+  height: 20px; 
+  line-height: 20px; 
+  text-align: center;
+  font-weight: bold;
+  color: black; 
+}
+.black-text{
+  color: black;
+}

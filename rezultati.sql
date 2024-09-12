@@ -153,7 +153,7 @@ INSERT INTO `teams` (`team_id`, `team_name`) VALUES
 (10, 'West Ham'),
 (11, 'Crystal Palace'),
 (12, 'Leicester'),
-(13, 'Nott\'m Forest'),
+(13, 'Nottm Forest'),
 (14, 'Fulham'),
 (15, 'Bournemount'),
 (16, 'Arsenal'),
