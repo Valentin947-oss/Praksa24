@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2024 at 07:55 AM
+-- Generation Time: Sep 12, 2024 at 12:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -133,34 +133,35 @@ INSERT INTO `statisticss` (`stat_id`, `team_id`, `wins`, `losses`, `draws`, `poi
 
 CREATE TABLE `teams` (
   `team_id` int(50) NOT NULL,
-  `team_name` varchar(100) NOT NULL
+  `team_name` varchar(100) NOT NULL,
+  `logo_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `teams`
 --
 
-INSERT INTO `teams` (`team_id`, `team_name`) VALUES
-(1, 'Man. City'),
-(2, 'Liverpool'),
-(3, 'Chelsea'),
-(4, 'Man Utd'),
-(5, 'Tottenham'),
-(6, 'Aston Villa'),
-(7, 'Southampton'),
-(8, 'Wolves'),
-(9, 'Ipswich '),
-(10, 'West Ham'),
-(11, 'Crystal Palace'),
-(12, 'Leicester'),
-(13, 'Nottm Forest'),
-(14, 'Fulham'),
-(15, 'Bournemount'),
-(16, 'Arsenal'),
-(17, 'Newcastle'),
-(18, 'Brighton'),
-(19, 'Everton'),
-(20, 'Brentford');
+INSERT INTO `teams` (`team_id`, `team_name`, `logo_path`) VALUES
+(1, 'Man City', 'Images/mci.jpg'),
+(2, 'Liverpool', 'Images/livv.jfif'),
+(3, 'Chelsea', 'Images/che.jpg'),
+(4, 'Man Utd', 'Images/mun.jpg'),
+(5, 'Tottenham', 'Images/tot.jpg'),
+(6, 'Aston Villa', 'Images/ast.jpg'),
+(7, 'Southampton', 'Images/sou.jfif'),
+(8, 'Wolves', 'Images/wol.jpg'),
+(9, 'Ipswich ', 'Images/ips.jfif'),
+(10, 'West Ham', 'Images/whu.jpg'),
+(11, 'Crystal Palace', 'Images/cry.jpg'),
+(12, 'Leicester', 'Images/lei.jfif'),
+(13, 'Nott\'m Forest', 'Images/nfo.jpg'),
+(14, 'Fulham', 'Images/ful.jpg'),
+(15, 'Bournemount', 'Images/bmo.jpg'),
+(16, 'Arsenal', 'Images/ars1.jpg'),
+(17, 'Newcastle', 'Images/new.jpg'),
+(18, 'Brighton', 'Images/bha.jpg'),
+(19, 'Everton', 'Images/eve.jpg'),
+(20, 'Brentford', 'Images/bre.jpg');
 
 --
 -- Indexes for dumped tables
@@ -200,7 +201,7 @@ ALTER TABLE `teams`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
