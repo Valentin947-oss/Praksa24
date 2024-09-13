@@ -107,7 +107,7 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         $squareClass = 'square';
     }
     if ($number >= 8 && $number <= 17) {
-        $squareClass='square';
+        $squareClass='';
         $textColorClass = 'black-text';
     } else {
         $textColorClass = ''; 
