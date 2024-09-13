@@ -108,7 +108,7 @@ if (!$result) {
     <div class="container">
         <h2>Add New Team Logo</h2>
         <form action="insert_team.php" method="post">
-            <input type="text" name="team_name" placeholder="Enter url adress" required>
+            <input type="text" name="team_name" placeholder="Enter logo path" required>
             <button type="submit" name="add_team">Add Team Logo</button>
         </form>
     </div>
