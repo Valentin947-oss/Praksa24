@@ -76,25 +76,37 @@ if (!$result) {
     <div class="container">
         <h2>Teams</h2>
         <table>
-            <tr>
-                <th>#</th>
-                <th>Team Name</th>
-                <th>Actions</th>
-            </tr>
-            <?php
-            $number = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>{$number}</td>";
-                echo "<td>{$row['team_name']}</td>";
-                echo "<td>
-                        <a href=\"insert_team.php?action=edit&team_id={$row['team_id']}\" class=\"edit-button\">Edit</a>
-                        <a href=\"insert_team.php?action=delete&team_id={$row['team_id']}\" class=\"delete-button\">Delete</a>
-                      </td>";
-                echo "</tr>";
-                $number++;
-            }
-            ?>
+        <tr>
+    <th>#</th>
+    <th> </th>
+    <th>Team Name</th>
+    <th>Actions</th>
+</tr>
+<?php
+$number = 1;
+while ($row = $result->fetch_assoc()) {
+   
+    if (isset($row['logo_path']) && !empty($row['logo_path'])) {
+        $logoPath = "Images/" . htmlspecialchars($row['logo_path'], ENT_QUOTES, 'UTF-8');
+    } else {
+        $logoPath = "Images/default_logo.png";
+    }
+    
+   
+
+    echo "<tr>";
+    echo "<td>{$number}</td>";
+    echo "<td><img src='{$logoPath}' alt='Logo' style='width: 40px; height: 40px;'></td>";
+    echo "<td>{$row['team_name']}</td>";
+    echo "<td>
+            <a href=\"insert_team.php?action=edit&team_id={$row['team_id']}\" class=\"edit-button\">Edit</a>
+            <a href=\"insert_team.php?action=delete&team_id={$row['team_id']}\" class=\"delete-button\">Delete</a>
+          </td>";
+    echo "</tr>";
+    $number++;
+}
+?>
+
         </table>
     </div>
 
@@ -105,13 +117,7 @@ if (!$result) {
             <button type="submit" name="add_team">Add Team</button>
         </form>
     </div>
-    <div class="container">
-        <h2>Add New Team Logo</h2>
-        <form action="insert_team.php" method="post">
-            <input type="text" name="team_name" placeholder="Enter logo path" required>
-            <button type="submit" name="add_team">Add Team Logo</button>
-        </form>
-    </div>
+   
 
     <?php
 if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'])) {
@@ -130,12 +136,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'
         $team_name = $row['team_name'];
 ?>
         <div class="container">
-            <h2>Edit Team</h2>
-            <form action="insert_team.php?action=edit&team_id=<?php echo htmlspecialchars($team_id); ?>" method="post">
-                <input type="text" name="team_name" value="<?php echo htmlspecialchars($team_name); ?>" required>
-                <button type="submit" name="edit_team">Update Team</button>
-            </form>
-        </div>
+    <h2>Add New Team</h2>
+    <form action="insert_team.php" method="post" enctype="multipart/form-data">
+        <input type="text" name="team_name" placeholder="Enter team name" required>
+        <input type="file" name="team_logo" accept="image/*">
+        <button type="submit" name="add_team">Add Team</button>
+    </form>
+</div>
 <?php
     } else {
         echo "Team not found.";
@@ -144,7 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['team_id'
     
     $stmt->close();
 } else {
-    echo "Invalid request.";
+    echo "";
 }
 ?>
 
