@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2024 at 11:11 AM
+-- Generation Time: Sep 16, 2024 at 02:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -154,7 +154,7 @@ INSERT INTO `teams` (`team_id`, `team_name`, `logo_path`) VALUES
 (10, 'West Ham', 'whu.jpg'),
 (11, 'Crystal Palace', 'cry.jpg'),
 (12, 'Leicester', 'lei.jfif'),
-(13, 'Nott\'m Forest', 'nfo.jpg'),
+(13, 'Nottm Forest', 'nfo.jpg'),
 (14, 'Fulham', 'ful.jpg'),
 (15, 'Bournemount', 'bmo.jpg'),
 (16, 'Arsenal', 'ars1.jpg'),
