@@ -113,18 +113,18 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
         $textColorClass = ''; 
     }
 
-    $logoPath = "Images/".htmlspecialchars($row['logo_path']);
+    $logoPath = "Images/".htmlspecialchars($row['logo_path']); 
     echo "
  <tr>
     <td class=''>
         <div class='square $squareClass'>$number</div>
-    </td>
+    </td> 
     <td>
     <img src='$logoPath' alt='Logo' style='width: 50px; height: 50px;'> 
     </td>
     <td>
      {$row['team_name']}
-   </td>
+   </td>       
    <td>
     {$row['rounds_played']}
    </td>
