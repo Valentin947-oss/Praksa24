@@ -121,9 +121,10 @@ if (file_exists($logoPath)) {
     <form action="insert_team.php<?php echo isset($_GET['team_id']) ? '?team_id=' . $_GET['team_id'] : ''; ?>" method="post" enctype="multipart/form-data">
         <input type="text" name="team_name" placeholder="Enter team name" required
                value="<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? htmlspecialchars($row['team_name'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-        <input type="file" name="team_logo" accept="image/*" <?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? '' : 'required'; ?>>
+        <input type="text" name="logo_path" placeholder="Enter logo path" required
+               value="<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? htmlspecialchars($row['logo_path'], ENT_QUOTES, 'UTF-8') : ''; ?>">
         <?php if (isset($_GET['action']) && $_GET['action'] == 'edit'): ?>
-            <button type="submit" name="edit_team">Update Team</button>
+            <button type="submit" name="edit_team">Add Team</button>
         <?php else: ?>
             <button type="submit" name="add_team">Add Team</button>
         <?php endif; ?>
