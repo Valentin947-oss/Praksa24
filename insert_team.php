@@ -50,7 +50,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['team_i
 }
 
 
-$sql = "SELECT team_id, team_name FROM Teams";
+$sql = "SELECT team_id, team_name, logo_path FROM Teams";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -98,7 +98,13 @@ $conn->close();
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>{$number}</td>";
-                echo "<td><img src='Images/default_logo.png' alt='Logo' style='width: 40px; height: 40px;'></td>";
+                $logoPath = "Images/" . htmlspecialchars($row['logo_path']); 
+
+if (file_exists($logoPath)) {
+    echo "<td><img src='$logoPath' alt='Logo' style='width: 50px; height: 50px;'></td>";
+} else {
+    echo "<td><img src='Images/default_logo.png' alt='Default Logo' style='width: 50px; height: 50px;'></td>";
+}
                 echo "<td>{$row['team_name']}</td>";
                 echo "<td>
                     <a href='insert_team.php?action=edit&team_id={$row['team_id']}' class='edit-button'>Edit</a>
