@@ -14,7 +14,8 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['add_team'])) {
         $team_name = $_POST['team_name'];
-        $sql = "INSERT INTO Teams (team_name) VALUES ('$team_name')";
+        $logoPath =  $_POST['logo_path'];
+        $sql = "INSERT INTO Teams (team_name, logo_path) VALUES ('$team_name','$logoPath')";
         if ($conn->query($sql) === TRUE) {
             echo '<script>alert("New team added successfully");</script>';
         } else {
@@ -26,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['edit_team'])) {
         $team_id = $_GET['team_id'];
         $team_name = $_POST['team_name'];
+        
 
         $sql = "UPDATE Teams SET team_name = '$team_name' WHERE team_id = $team_id";
 
