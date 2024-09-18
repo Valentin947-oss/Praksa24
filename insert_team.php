@@ -13,9 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $logoPath = $_POST['logo_path'];
         $sql = "INSERT INTO Teams (team_name, logo_path) VALUES ('$team_name','$logoPath')";
         if ($conn->query($sql) === TRUE) {
-            echo '<script>alert("New team added successfully");</script>';
+           // echo '<script>alert("New team added successfully");</script>';
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            //echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
     if (isset($_POST['edit_team'])) {
@@ -25,9 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $sql = "UPDATE Teams SET team_name = '$team_name', logo_path = '$logoPath' WHERE team_id = $team_id";
         if ($conn->query($sql) === TRUE) {
-            echo '<script>alert("Team updated successfully");</script>';
+            //echo '<script>alert("Team updated successfully");</script>';
         } else {
-            echo "Error updating team: " . $conn->error;
+            //echo "Error updating team: " . $conn->error;
         }
     }
 }
@@ -35,9 +35,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['team_i
     $team_id = $_GET['team_id'];
     $sql = "DELETE FROM Teams WHERE team_id = $team_id";
     if ($conn->query($sql) === TRUE) {
-        echo '<script>alert("Team deleted successfully");</script>';
+        //echo '<script>alert("Team deleted successfully");</script>';
     } else {
-        echo "Error deleting team: " . $conn->error;
+        //echo "Error deleting team: " . $conn->error;
     }
 }
 $sql = "SELECT team_id, team_name, logo_path FROM Teams";
