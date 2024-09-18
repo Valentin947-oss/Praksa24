@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2024 at 02:15 PM
+-- Generation Time: Sep 18, 2024 at 12:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -134,7 +134,7 @@ INSERT INTO `statisticss` (`stat_id`, `team_id`, `wins`, `losses`, `draws`, `poi
 CREATE TABLE `teams` (
   `team_id` int(50) NOT NULL,
   `team_name` varchar(100) NOT NULL,
-  `logo_path` varchar(255) DEFAULT NULL
+  `logo_path` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -201,7 +201,7 @@ ALTER TABLE `teams`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables
