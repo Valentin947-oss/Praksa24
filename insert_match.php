@@ -39,12 +39,10 @@
 
             $conn = new mysqli($servername, $username, $password, $database);
 
-           
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-          
             $sql = "SELECT team_id, team_name FROM teams";
             $result = $conn->query($sql);
 
@@ -65,15 +63,12 @@
         <label for="away_team">Away Team:</label><br>
         <select id="away_team" name="away_team" required>
             <?php
-          
             $conn = new mysqli($servername, $username, $password, $database);
 
-          
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-        
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -96,11 +91,8 @@
         <label for="away_team_score">Away Team Score:</label><br>
         <input type="number" id="away_team_score" name="away_team_score" required><br><br>
         
-        <label for="match_date">Match Date:</label><br>
-        <input type="date" id="match_date" name="match_date" required><br><br>
-        
-        <label for="match_time">Match Time:</label><br>
-        <input type="time" id="match_time" name="match_time" required><br><br>
+        <label for="match_datetime">Match Date and Time:</label><br>
+        <input type="datetime-local" id="match_datetime" name="match_datetime" required><br><br>
         
         <button type="submit" name="add_match">Add Match Result</button>
     </form>
@@ -112,15 +104,12 @@
         $password = "";
         $database = "rezultati";
 
-     
         $conn = new mysqli($servername, $username, $password, $database);
 
-        
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
 
-     
         $sql_count_matches = "SELECT COUNT(*) AS total_matches FROM matches";
         $result_count_matches = $conn->query($sql_count_matches);
 
@@ -128,11 +117,9 @@
             $row = $result_count_matches->fetch_assoc();
             $total_matches = $row['total_matches'];
 
-           
             $rounds_completed = floor($total_matches / 10); 
             $next_round_number = $rounds_completed + 5; 
 
-            
             if ($next_round_number < 5) {
                 $next_round_number = 5;
             }
@@ -145,19 +132,15 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      
         $round_number = $_POST['round_number'];
         $home_team_id = $_POST['home_team'];
         $away_team_id = $_POST['away_team'];
         $home_team_score = $_POST['home_team_score'];
         $away_team_score = $_POST['away_team_score'];
-        $match_date = $_POST['match_date'];
-        $match_time = $_POST['match_time'];
+        $match_datetime = $_POST['match_datetime']; // Get datetime input
 
-      
         $conn = new mysqli($servername, $username, $password, $database);
 
-      
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
@@ -173,9 +156,8 @@
             $next_match_id = 1; 
         }
 
-        
-        $sql_insert = "INSERT INTO matches (match_id, round_number, home_team_id, away_team_id, home_team_score, away_team_score, match_date, match_time)
-                       VALUES ('$next_match_id', '$round_number', '$home_team_id', '$away_team_id', '$home_team_score', '$away_team_score', '$match_date', '$match_time')";
+        $sql_insert = "INSERT INTO matches (match_id, round_number, home_team_id, away_team_id, home_team_score, away_team_score, match_datetime)
+                       VALUES ('$next_match_id', '$round_number', '$home_team_id', '$away_team_id', '$home_team_score', '$away_team_score', '$match_datetime')";
 
         if ($conn->query($sql_insert) === TRUE) {
             echo "New record added successfully";
@@ -187,6 +169,7 @@
     }
     ?>
 </div>
+
 
 <footer class="footer">
     All Rights Reserved - 2024 <br>
