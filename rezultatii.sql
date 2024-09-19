@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2024 at 12:24 PM
+-- Generation Time: Sep 19, 2024 at 08:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -191,7 +191,8 @@ ALTER TABLE `statisticss`
 -- Indexes for table `teams`
 --
 ALTER TABLE `teams`
-  ADD PRIMARY KEY (`team_id`);
+  ADD PRIMARY KEY (`team_id`),
+  ADD UNIQUE KEY `team_name` (`team_name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -201,7 +202,7 @@ ALTER TABLE `teams`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `team_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- Constraints for dumped tables
