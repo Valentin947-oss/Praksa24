@@ -137,7 +137,7 @@
         $away_team_id = $_POST['away_team'];
         $home_team_score = $_POST['home_team_score'];
         $away_team_score = $_POST['away_team_score'];
-        $match_datetime = $_POST['match_datetime']; // Get datetime input
+        $match_datetime = $_POST['match_datetime']; 
 
         $conn = new mysqli($servername, $username, $password, $database);
 
@@ -145,7 +145,7 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        // Get next match ID
+        
         $sql_max_match_id = "SELECT MAX(match_id) AS max_id FROM matches";
         $result_max_id = $conn->query($sql_max_match_id);
     
