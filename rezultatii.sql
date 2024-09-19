@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2024 at 12:30 PM
+-- Generation Time: Sep 19, 2024 at 01:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -81,8 +81,7 @@ INSERT INTO `matches` (`match_id`, `round_number`, `home_team_id`, `away_team_id
 (37, 4, 8, 11, 0, 0, '2024-09-14 13:00:00'),
 (38, 4, 9, 10, 1, 2, '2024-09-14 15:00:00'),
 (39, 4, 13, 12, 0, 2, '2024-09-14 15:00:00'),
-(40, 4, 20, 18, 1, 1, '2024-09-14 17:30:00'),
-(41, 9, 16, 6, 1, 1, '2024-09-19 15:29:00');
+(40, 4, 20, 18, 1, 1, '2024-09-14 17:30:00');
 
 --
 -- Triggers `matches`
@@ -198,9 +197,7 @@ ALTER TABLE `matches`
   ADD UNIQUE KEY `match_id_3` (`match_id`),
   ADD UNIQUE KEY `match_id_4` (`match_id`),
   ADD UNIQUE KEY `unique_match_id` (`match_id`),
-  ADD KEY `match_id_2` (`match_id`),
-  ADD KEY `home_team_id` (`home_team_id`),
-  ADD KEY `away_team_id` (`away_team_id`);
+  ADD KEY `match_id_2` (`match_id`);
 
 --
 -- Indexes for table `statisticss`
