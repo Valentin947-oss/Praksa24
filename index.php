@@ -176,12 +176,11 @@ $sql = "SELECT
             away.logo_path AS away_logo,  
             m.home_team_score,
             m.away_team_score,
-            m.match_date,
-            m.match_time
+            m.match_datetime
         FROM Matches m
         INNER JOIN Teams home ON m.home_team_id = home.team_id
         INNER JOIN Teams away ON m.away_team_id = away.team_id
-        ORDER BY m.match_date, m.match_time";
+        ORDER BY  m.match_datetime";
 
 $result = $conn->query($sql);
 
@@ -193,36 +192,34 @@ if ($result->num_rows > 0) {
     echo '<div class="Fixcontainer">';
     
     while ($row = $result->fetch_assoc()) {
-        // kalkulira kolku kola ima vrz osnova na datumot i satot
-        $matchDateTime = strtotime($row['match_date'] . ' ' . $row['match_time']);
+        // Use match_datetime instead of match_date and match_time
+        $matchDateTime = strtotime($row['match_datetime']); // Convert match_datetime to timestamp
         $weekNumber = date('W', $matchDateTime);
         
-        // generira  kola
+        // Generate week number
         if ($weekNumber != $previousWeek && $weekCount < 38) {
             $previousWeek = $weekNumber;
             $weekCount++;
-            echo '</div>'; // zatvora kolo
+            echo '</div>'; // Close the previous week
             echo '<div class="fixture">';
             echo "<h2>Week $weekCount</h2>";
         }
         
-        
         $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
-        $homeLogoPath = "Images/".htmlspecialchars($row['home_logo']);
-        $awayLogoPath = "Images/".htmlspecialchars($row['away_logo']);
+        $homeLogoPath = "Images/" . htmlspecialchars($row['home_logo']);
+        $awayLogoPath = "Images/" . htmlspecialchars($row['away_logo']);
         
-        //echo "<p>$formattedDateTime | {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} {$row['away_team']}</p>";
         echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}</p>";
     }
     
     echo '</div>'; 
     echo '</div>';  
-} else {
-    echo "0 results";
-}
-
-$conn->close();
-?>
+    } else {
+        echo "0 results";
+    }
+    
+    $conn->close();
+    ?>
        
         <footer class="footer">
             All Rights Reserved - 2024 <br>
