@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2024 at 11:20 AM
+-- Generation Time: Sep 19, 2024 at 12:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -81,7 +81,30 @@ INSERT INTO `matches` (`match_id`, `round_number`, `home_team_id`, `away_team_id
 (37, 4, 8, 11, 0, 0, '2024-09-14 13:00:00'),
 (38, 4, 9, 10, 1, 2, '2024-09-14 15:00:00'),
 (39, 4, 13, 12, 0, 2, '2024-09-14 15:00:00'),
-(40, 4, 20, 18, 1, 1, '2024-09-14 17:30:00');
+(40, 4, 20, 18, 1, 1, '2024-09-14 17:30:00'),
+(41, 9, 16, 6, 1, 1, '2024-09-19 15:29:00');
+
+--
+-- Triggers `matches`
+--
+DELIMITER $$
+CREATE TRIGGER `prevent_duplicate_matches` BEFORE INSERT ON `matches` FOR EACH ROW BEGIN
+  DECLARE match_exists INT;
+  
+  SELECT COUNT(*)
+  INTO match_exists
+  FROM matches
+  WHERE (home_team_id = NEW.home_team_id AND away_team_id = NEW.away_team_id OR
+         home_team_id = NEW.away_team_id AND away_team_id = NEW.home_team_id)
+    AND DATE(match_datetime) = DATE(NEW.match_datetime);
+  
+  IF match_exists > 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Teams cannot play against each other more than once in a day.';
+  END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
