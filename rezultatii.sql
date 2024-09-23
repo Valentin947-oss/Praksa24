@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2024 at 01:57 PM
+-- Generation Time: Sep 23, 2024 at 01:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -194,10 +194,9 @@ INSERT INTO `teams` (`team_id`, `team_name`, `logo_path`) VALUES
 ALTER TABLE `matches`
   ADD PRIMARY KEY (`match_id`),
   ADD UNIQUE KEY `match_id` (`match_id`),
-  ADD UNIQUE KEY `match_id_3` (`match_id`),
-  ADD UNIQUE KEY `match_id_4` (`match_id`),
   ADD UNIQUE KEY `unique_match_id` (`match_id`),
-  ADD KEY `match_id_2` (`match_id`);
+  ADD KEY `match_id_2` (`match_id`),
+  ADD KEY `home_team_id` (`home_team_id`,`away_team_id`,`match_datetime`);
 
 --
 -- Indexes for table `statisticss`
