@@ -9,6 +9,42 @@
     <link rel="stylesheet" href="stylee.css">
     <link rel="stylesheet" href="style_insert.css">
     <script src="js.js"></script>
+    <style>
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto;
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
@@ -21,9 +57,9 @@
         <li><a href="index.php" class="nvy">2024/25</a></li>
         <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
         <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-    </ul>
-    
+    </ul>    
 </nav>
+
 <br>
 <br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
@@ -166,7 +202,7 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
     
 
  
-    <?php
+            <?php
 
 $sql = "SELECT
             m.match_id,
@@ -180,7 +216,7 @@ $sql = "SELECT
         FROM Matches m
         INNER JOIN Teams home ON m.home_team_id = home.team_id
         INNER JOIN Teams away ON m.away_team_id = away.team_id
-        ORDER BY  m.match_datetime";
+        ORDER BY m.match_datetime";
 
 $result = $conn->query($sql);
 
@@ -192,15 +228,14 @@ if ($result->num_rows > 0) {
     echo '<div class="Fixcontainer">';
     
     while ($row = $result->fetch_assoc()) {
-        // Use match_datetime instead of match_date and match_time
-        $matchDateTime = strtotime($row['match_datetime']); // Convert match_datetime to timestamp
+        
+        $matchDateTime = strtotime($row['match_datetime']); 
         $weekNumber = date('W', $matchDateTime);
         
-        // Generate week number
         if ($weekNumber != $previousWeek && $weekCount < 38) {
             $previousWeek = $weekNumber;
             $weekCount++;
-            echo '</div>'; // Close the previous week
+            echo '</div>'; 
             echo '<div class="fixture">';
             echo "<h2>Week $weekCount</h2>";
         }
@@ -209,22 +244,82 @@ if ($result->num_rows > 0) {
         $homeLogoPath = "Images/" . htmlspecialchars($row['home_logo']);
         $awayLogoPath = "Images/" . htmlspecialchars($row['away_logo']);
         
-        echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}</p>";
+        
+        echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}
+        <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$row['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$row['home_team_score']}, {$row['away_team_score']});'>Edit</a>
+        <a href='insert_match.php?action=delete&match_id={$row['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
+    </p>";
+
     }
     
     echo '</div>'; 
     echo '</div>';  
+} else {
+    echo "0 results";
+}
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_id'])) {
+    $match_id = $_GET['match_id'];
+
+    if (filter_var($match_id,)) {
+        $sql = "DELETE FROM Matches WHERE match_id = ?";
+        $stmt = $conn->prepare($sql);
+        
+        if ($stmt) {
+            $stmt->bind_param("i", $match_id);
+            if ($stmt->execute()) {
+                echo '<script>alert("Match deleted successfully.");</script>';
+            } else {
+                echo "Error deleting match: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $conn->error;
+        }
     } else {
-        echo "0 results";
+        echo "Invalid match ID.";
     }
-    
-    $conn->close();
-    ?>
-       
-        <footer class="footer">
-            All Rights Reserved - 2024 <br>
-            
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </footer>
+}
+
+
+
+$conn->close();
+?>
+
+
+<div id="editMatchModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeMatchModal()">&times;</span>
+        <h2>Edit Match</h2>
+        <form action="insert_match.php" method="post">
+            <input type="hidden" name="match_id" id="match_id">
+            <label>Match Date & Time:</label> <br>
+            <input type="datetime-local" name="match_datetime" id="match_datetime" required> <br>
+            <label>Home Team Score:</label>
+            <input type="number" name="home_score" id="home_score" required> <br>
+            <label>Away Team Score:</label>
+            <input type="number" name="away_score" id="away_score" required>
+            <button type="submit" name="edit_match">Update Match</button>
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+    All Rights Reserved - 2024 <br>
+    <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+</footer>
+
+<script>
+    function openMatchModal(matchId, matchDateTime, homeScore, awayScore) {
+        document.getElementById('match_id').value = matchId;
+        document.getElementById('match_datetime').value = matchDateTime;
+        document.getElementById('home_score').value = homeScore;
+        document.getElementById('away_score').value = awayScore;
+        document.getElementById('editMatchModal').style.display = "block";
+    }
+
+    function closeMatchModal() {
+        document.getElementById('editMatchModal').style.display = "none";
+    }
+</script>
 </body>
 </html>
