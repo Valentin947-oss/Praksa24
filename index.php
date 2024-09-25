@@ -216,7 +216,7 @@ $sql = "SELECT
         FROM Matches m
         INNER JOIN Teams home ON m.home_team_id = home.team_id
         INNER JOIN Teams away ON m.away_team_id = away.team_id
-        ORDER BY m.match_datetime";
+        ORDER BY m.match_datetime DESC";
 
 $result = $conn->query($sql);
 
