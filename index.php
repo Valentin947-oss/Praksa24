@@ -222,58 +222,86 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     
-    $weekCount = 0; 
-    $previousWeek = 0; 
+    $matchesByWeek = [];
     
-    echo '<div class="Fixcontainer">';
     
     while ($row = $result->fetch_assoc()) {
-        
-        $matchDateTime = strtotime($row['match_datetime']); 
+        $matchDateTime = strtotime($row['match_datetime']);
         $weekNumber = date('W', $matchDateTime);
         
-        if ($weekNumber != $previousWeek && $weekCount < 38) {
-            $previousWeek = $weekNumber;
-            $weekCount++;
-            echo '</div>'; 
-            echo '<div class="fixture">';
-            echo "<h2>Week $weekCount</h2>";
+        if (!isset($matchesByWeek[$weekNumber])) {
+            $matchesByWeek[$weekNumber] = [];
         }
-        
-        $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
-        $homeLogoPath = "Images/" . htmlspecialchars($row['home_logo']);
-        $awayLogoPath = "Images/" . htmlspecialchars($row['away_logo']);
-        
-        
-        echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$row['home_team']} {$row['home_team_score']} - {$row['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$row['away_team']}
-        <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$row['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$row['home_team_score']}, {$row['away_team_score']});'>Edit</a>
-        <a href='insert_match.php?action=delete&match_id={$row['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
-    </p>";
+        $matchesByWeek[$weekNumber][] = $row; // Grupiranje po kola
+    }
 
+    // Sortiranje vo obraten redosled-opagacki
+    krsort($matchesByWeek); 
+
+    echo '<div class="Fixcontainer">';
+    
+    
+    $totalWeeks = count($matchesByWeek);
+    
+    
+    $weekCount = $totalWeeks;
+
+    // pecatenje na rasporedot
+    foreach ($matchesByWeek as $weekNumber => $matches) {
+        echo '<div class="fixture">';
+        echo "<h2>Week $weekCount</h2>"; // Tekovno kolo
+        
+        // Grupiranje po 10 utakmici vo kolo
+        $matchesToDisplay = array_slice($matches, 0, 10);
+
+        if (!empty($matchesToDisplay)) {
+            foreach ($matchesToDisplay as $match) {
+                $matchDateTime = strtotime($match['match_datetime']);
+                $formattedDateTime = date('d.m.Y H:i', $matchDateTime);
+                $homeLogoPath = "Images/" . htmlspecialchars($match['home_logo']);
+                $awayLogoPath = "Images/" . htmlspecialchars($match['away_logo']);
+                
+                echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']}
+                <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$match['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$match['home_team_score']}, {$match['away_team_score']});'>Edit</a>
+                <a href='insert_match.php?action=delete&match_id={$match['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
+            </p>";
+            }
+        } else {
+            echo "<p>No matches for this week.</p>";
+        }
+
+        echo '</div>'; 
+        $weekCount--; 
     }
     
     echo '</div>'; 
-    echo '</div>';  
 } else {
     echo "0 results";
 }
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_id'])) {
+
+// DELETE logika
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['match_id'])) {
     $match_id = $_GET['match_id'];
 
-    if (filter_var($match_id,)) {
+    // Validate the match_id
+    if (filter_var($match_id, FILTER_VALIDATE_INT)) {
+        // Prepare the DELETE statement
         $sql = "DELETE FROM Matches WHERE match_id = ?";
         $stmt = $conn->prepare($sql);
         
         if ($stmt) {
+            // Bind the parameter
             $stmt->bind_param("i", $match_id);
+            
+            // Execute the statement
             if ($stmt->execute()) {
-                echo '<script>alert("Match deleted successfully.");</script>';
+                echo '<script>alert("Match deleted successfully."); window.location.href = "index.php";</script>';
             } else {
-                echo "Error deleting match: " . $stmt->error;
+                echo "Error deleting match: " . htmlspecialchars($stmt->error);
             }
             $stmt->close();
         } else {
-            echo "Error preparing statement: " . $conn->error;
+            echo "Error preparing statement: " . htmlspecialchars($conn->error);
         }
     } else {
         echo "Invalid match ID.";
@@ -281,9 +309,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_
 }
 
 
-
 $conn->close();
 ?>
+
 
 
 <div id="editMatchModal" class="modal">
