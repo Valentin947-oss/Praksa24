@@ -290,7 +290,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['match
         $stmt = $conn->prepare($sql);
         
         if ($stmt) {
-            /
+            
             $stmt->bind_param("i", $match_id);
             
             
