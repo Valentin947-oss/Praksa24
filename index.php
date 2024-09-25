@@ -283,17 +283,17 @@ if ($result->num_rows > 0) {
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['match_id'])) {
     $match_id = $_GET['match_id'];
 
-    // Validate the match_id
+    
     if (filter_var($match_id, FILTER_VALIDATE_INT)) {
         // Prepare the DELETE statement
         $sql = "DELETE FROM Matches WHERE match_id = ?";
         $stmt = $conn->prepare($sql);
         
         if ($stmt) {
-            // Bind the parameter
+            /
             $stmt->bind_param("i", $match_id);
             
-            // Execute the statement
+            
             if ($stmt->execute()) {
                 echo '<script>alert("Match deleted successfully."); window.location.href = "index.php";</script>';
             } else {
