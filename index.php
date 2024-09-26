@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -279,54 +278,64 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-// DELETE logika
-if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['match_id'])) {
-    $match_id = $_GET['match_id'];
 
-    
-    if (filter_var($match_id, FILTER_VALIDATE_INT)) {
-        // Prepare the DELETE statement
-        $sql = "DELETE FROM Matches WHERE match_id = ?";
-        $stmt = $conn->prepare($sql);
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_id'])) {
+    $match_id = $_GET['match_id'];
+    $sql = "DELETE FROM Matches WHERE match_id = $match_id";
+    if ($conn->query($sql) === TRUE) {
+        //echo '<script>alert("Team deleted successfully");</script>';
+    } else {
+        //echo "Error deleting team: " . $conn->error;
+    }
+}
+if (isset($_POST['edit_match_button'])) {
+    $match_id = $_POST['match_id'];
+    $home_team_score = $_POST['home_score'];
+    $away_team_score = $_POST['away_score'];
+    $match_datetime = $_POST['match_datetime'];
+
+  
+    if (filter_var($match_id, FILTER_VALIDATE_INT) && 
+        filter_var($home_team_score, FILTER_VALIDATE_INT) && 
+        filter_var($away_team_score, FILTER_VALIDATE_INT) && 
+        !empty($match_datetime)) {
         
+        $sql = "UPDATE Matches SET home_team_score = ?, away_team_score = ?, match_datetime = ? WHERE match_id = ?";
+        $stmt = $conn->prepare($sql);
+
         if ($stmt) {
-            
-            $stmt->bind_param("i", $match_id);
-            
-            
+            $stmt->bind_param("iisi", $home_team_score, $away_team_score, $match_datetime, $match_id);
+
             if ($stmt->execute()) {
-                echo '<script>alert("Match deleted successfully."); window.location.href = "index.php";</script>';
+                echo '<script>alert("Match updated successfully."); window.location.href = "index.php";</script>';
             } else {
-                echo "Error deleting match: " . htmlspecialchars($stmt->error);
+                echo "Error updating match: " . htmlspecialchars($stmt->error);
             }
             $stmt->close();
         } else {
             echo "Error preparing statement: " . htmlspecialchars($conn->error);
         }
     } else {
-        echo "Invalid match ID.";
+        echo "Invalid input.";
     }
 }
 
-
 $conn->close();
 ?>
-
-
 
 <div id="editMatchModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeMatchModal()">&times;</span>
         <h2>Edit Match</h2>
-        <form action="insert_match.php" method="post">
-            <input type="hidden" name="match_id" id="match_id">
+        <form action="index.php" method="post">
+            <input type="hidden" name="match_id" id="match_id" value="<?php echo htmlspecialchars($match_id); ?>">
             <label>Match Date & Time:</label> <br>
-            <input type="datetime-local" name="match_datetime" id="match_datetime" required> <br>
+            <input type="datetime-local" name="match_datetime" id="match_datetime" value="<?php echo htmlspecialchars($match_datetime); ?>" required> <br>
             <label>Home Team Score:</label>
-            <input type="number" name="home_score" id="home_score" required> <br>
+            <input type="number" name="home_score" id="home_score" value="<?php echo htmlspecialchars($home_score); ?>" required> <br>
             <label>Away Team Score:</label>
-            <input type="number" name="away_score" id="away_score" required>
-            <button type="submit" name="edit_match">Update Match</button>
+            <input type="number" name="away_score" id="away_score" value="<?php echo htmlspecialchars($away_score); ?>" required>
+            <button type="submit" name="edit_match_button">Update Match</button>
         </form>
     </div>
 </div>
