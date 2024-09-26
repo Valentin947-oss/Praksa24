@@ -319,7 +319,53 @@ if (isset($_POST['edit_match_button'])) {
         echo "Invalid input.";
     }
 }
+function calculatePoints($home_team_id, $away_team_id, $home_team_score, $away_team_score) {
+    global $conn; 
 
+    
+    $home_points = 0;
+    $away_points = 0;
+
+    
+    if ($home_team_score > $away_team_score) {
+        $home_points = 3; 
+    } elseif ($home_team_score < $away_team_score) {
+        $away_points = 3; 
+    } else {
+        $home_points = 1; 
+        $away_points = 1;  
+    }
+
+    
+    $sql = "UPDATE Statisticss SET wins = wins + ?, draws = draws + ?, losses = losses + ? WHERE team_id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        if ($home_team_score > $away_team_score) {
+            $stmt->bind_param("iiis", $home_points, 0, 0, $home_team_id);
+        } elseif ($home_team_score < $away_team_score) {
+            $stmt->bind_param("iiis", 0, 0, 1, $home_team_id);
+        } else {
+            $stmt->bind_param("iiis", 0, 1, 0, $home_team_id);
+        }
+        $stmt->execute();
+        $stmt->close();
+    }
+
+   
+    $sql = "UPDATE Statisticss SET wins = wins + ?, draws = draws + ?, losses = losses + ? WHERE team_id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        if ($away_team_score > $home_team_score) {
+            $stmt->bind_param("iiis", $away_points, 0, 0, $away_team_id);
+        } elseif ($away_team_score < $home_team_score) {
+            $stmt->bind_param("iiis", 0, 0, 1, $away_team_id);
+        } else {
+            $stmt->bind_param("iiis", 0, 1, 0, $away_team_id);
+        }
+        $stmt->execute();
+        $stmt->close();
+    }
+}
 $conn->close();
 ?>
 
