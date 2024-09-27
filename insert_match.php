@@ -176,5 +176,6 @@
     
     <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
 </footer>
+
 </body>
 </html>
