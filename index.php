@@ -48,7 +48,6 @@
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
     <nav>
-    
     <ul>
         <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
         <li><a href="AboutUs.html" class="nvy">About Us</a></li>
@@ -58,7 +57,6 @@
         <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
     </ul>    
 </nav>
-
 <br>
 <br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
@@ -72,10 +70,7 @@
  $username="root";
  $password="";
  $database="rezultati";
-
 $conn =new mysqli($servername, $username, $password, $database);
-
-
 if (!$conn) {
 die("Connection failed: " . $conn->connect_error);
 }
@@ -106,7 +101,6 @@ $result = $conn->query($sql);
 $number=1;
 if(!$result)
 die("Ivalied query");
-
 echo "
  <tr>
     <th>#</th>
@@ -121,9 +115,7 @@ echo "
     <th>GDF</th>
     <th>POINTS</th>
 </tr>";
-
 $number = 1; 
-
 while (($row = $result->fetch_assoc()) && ($number <= 20)) {
     if ($number <= 4) {
         $backgroundClass = '';
@@ -147,7 +139,6 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
     } else {
         $textColorClass = ''; 
     }
-
     $logoPath = "Images/".htmlspecialchars($row['logo_path']); 
     echo "
  <tr>
@@ -191,18 +182,13 @@ while (($row = $result->fetch_assoc()) && ($number <= 20)) {
 }
 ?>
 </table>
-
         <p><div class="square LS"></div>Qualified - Champions League (Group Stage:) 
         <p><div class="square LE"></div>Qualified - Europe League (Group Stage:)
         <p><div class="square LK"></div>Qualified - Europe Conferences League (Group Stage:) 
         <p><div class="square ISP"></div>Relegation - Championship 
         <p>If teams have the same number of points at the end<br> of the season, 
             the placement is decided by <br>goal difference.</p>
-    
-
- 
             <?php
-
 $sql = "SELECT
             m.match_id,
             home.team_name AS home_team,
@@ -233,26 +219,18 @@ if ($result->num_rows > 0) {
         }
         $matchesByWeek[$weekNumber][] = $row; // Grupiranje po kola
     }
-
     // Sortiranje vo obraten redosled-opagacki
     krsort($matchesByWeek); 
 
     echo '<div class="Fixcontainer">';
-    
-    
     $totalWeeks = count($matchesByWeek);
-    
-    
     $weekCount = $totalWeeks;
-
     // pecatenje na rasporedot
     foreach ($matchesByWeek as $weekNumber => $matches) {
         echo '<div class="fixture">';
         echo "<h2>Week $weekCount</h2>"; // Tekovno kolo
-        
         // Grupiranje po 10 utakmici vo kolo
         $matchesToDisplay = array_slice($matches, 0, 10);
-
         if (!empty($matchesToDisplay)) {
             foreach ($matchesToDisplay as $match) {
                 $matchDateTime = strtotime($match['match_datetime']);
@@ -262,30 +240,32 @@ if ($result->num_rows > 0) {
                 
                 echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']}
                 <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$match['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$match['home_team_score']}, {$match['away_team_score']});'>Edit</a>
-                <a href='insert_match.php?action=delete&match_id={$match['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
+                <a href='index.php?action=delete&match_id={$match['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
             </p>";
             }
         } else {
             echo "<p>No matches for this week.</p>";
         }
-
         echo '</div>'; 
         $weekCount--; 
     }
-    
     echo '</div>'; 
 } else {
     echo "0 results";
 }
-
-
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_id'])) {
     $match_id = $_GET['match_id'];
-    $sql = "DELETE FROM Matches WHERE match_id = $match_id";
-    if ($conn->query($sql) === TRUE) {
-        //echo '<script>alert("Team deleted successfully");</script>';
+    $stmt = $conn->prepare("DELETE FROM Matches WHERE match_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $match_id);
+        if ($stmt->execute()) {
+            //echo '<script>alert("Match deleted successfully");</script>';
+        } else {
+            echo "Error deleting match: " . $stmt->error;
+        }
+        $stmt->close();
     } else {
-        //echo "Error deleting team: " . $conn->error;
+        echo "Error preparing statement: " . $conn->error;
     }
 }
 if (isset($_POST['edit_match_button'])) {
@@ -293,16 +273,13 @@ if (isset($_POST['edit_match_button'])) {
     $home_team_score = $_POST['home_score'];
     $away_team_score = $_POST['away_score'];
     $match_datetime = $_POST['match_datetime'];
-
-  
-    if (filter_var($match_id, FILTER_VALIDATE_INT) && 
+     if (filter_var($match_id, FILTER_VALIDATE_INT) && 
         filter_var($home_team_score, FILTER_VALIDATE_INT) && 
         filter_var($away_team_score, FILTER_VALIDATE_INT) && 
         !empty($match_datetime)) {
         
         $sql = "UPDATE Matches SET home_team_score = ?, away_team_score = ?, match_datetime = ? WHERE match_id = ?";
         $stmt = $conn->prepare($sql);
-
         if ($stmt) {
             $stmt->bind_param("iisi", $home_team_score, $away_team_score, $match_datetime, $match_id);
 
@@ -319,56 +296,8 @@ if (isset($_POST['edit_match_button'])) {
         echo "Invalid input.";
     }
 }
-function calculatePoints($home_team_id, $away_team_id, $home_team_score, $away_team_score) {
-    global $conn; 
-
-    
-    $home_points = 0;
-    $away_points = 0;
-
-    
-    if ($home_team_score > $away_team_score) {
-        $home_points = 3; 
-    } elseif ($home_team_score < $away_team_score) {
-        $away_points = 3; 
-    } else {
-        $home_points = 1; 
-        $away_points = 1;  
-    }
-
-    
-    $sql = "UPDATE Statisticss SET wins = wins + ?, draws = draws + ?, losses = losses + ? WHERE team_id = ?";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        if ($home_team_score > $away_team_score) {
-            $stmt->bind_param("iiis", $home_points, 0, 0, $home_team_id);
-        } elseif ($home_team_score < $away_team_score) {
-            $stmt->bind_param("iiis", 0, 0, 1, $home_team_id);
-        } else {
-            $stmt->bind_param("iiis", 0, 1, 0, $home_team_id);
-        }
-        $stmt->execute();
-        $stmt->close();
-    }
-
-   
-    $sql = "UPDATE Statisticss SET wins = wins + ?, draws = draws + ?, losses = losses + ? WHERE team_id = ?";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        if ($away_team_score > $home_team_score) {
-            $stmt->bind_param("iiis", $away_points, 0, 0, $away_team_id);
-        } elseif ($away_team_score < $home_team_score) {
-            $stmt->bind_param("iiis", 0, 0, 1, $away_team_id);
-        } else {
-            $stmt->bind_param("iiis", 0, 1, 0, $away_team_id);
-        }
-        $stmt->execute();
-        $stmt->close();
-    }
-}
 $conn->close();
 ?>
-
 <div id="editMatchModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeMatchModal()">&times;</span>
@@ -385,12 +314,10 @@ $conn->close();
         </form>
     </div>
 </div>
-
 <footer class="footer">
     All Rights Reserved - 2024 <br>
     <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
 </footer>
-
 <script>
     function openMatchModal(matchId, matchDateTime, homeScore, awayScore) {
         document.getElementById('match_id').value = matchId;
@@ -399,7 +326,6 @@ $conn->close();
         document.getElementById('away_score').value = awayScore;
         document.getElementById('editMatchModal').style.display = "block";
     }
-
     function closeMatchModal() {
         document.getElementById('editMatchModal').style.display = "none";
     }
