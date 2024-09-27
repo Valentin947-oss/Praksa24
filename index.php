@@ -268,6 +268,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_
         echo "Error preparing statement: " . $conn->error;
     }
 }
+
 if (isset($_POST['edit_match_button'])) {
     $match_id = $_POST['match_id'];
     $home_team_score = $_POST['home_score'];
