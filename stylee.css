@@ -460,3 +460,24 @@ th {
 .black-text{
   color: black;
 }
+.headerr {
+  display: flex;
+  justify-content: flex-end; 
+  padding: 10px;
+  background-color: #f8f9fa; 
+}
+
+.logout {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout:hover {
+  background-color: #c9302c; 
+}
