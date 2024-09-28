@@ -20,7 +20,12 @@
         <li><a href="index.php" class="nvy">2024/25</a></li>
         <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
         <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-    </ul>
+        <li><div class="headerr">
+    <form action="logout.php" method="post">
+        <button type="submit" class="logouttt">Logout</button>
+    </form>
+</div></li>
+    </ul>    
 </nav>
 
 <div class="container">
