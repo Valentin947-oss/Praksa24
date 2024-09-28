@@ -47,7 +47,7 @@
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
-    <nav>
+<nav>
     <ul>
         <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
         <li><a href="AboutUs.html" class="nvy">About Us</a></li>
@@ -55,8 +55,14 @@
         <li><a href="index.php" class="nvy">2024/25</a></li>
         <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
         <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+        <li><div class="headerr">
+    <form action="logout.php" method="post">
+        <button type="submit" class="logouttt">Logout</button>
+    </form>
+</div></li>
     </ul>    
 </nav>
+
 <br>
 <br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
