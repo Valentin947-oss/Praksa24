@@ -88,16 +88,13 @@
         
         <button type="submit" name="add_match">Add Match Result</button>
     </form>
-
     <?php
     function getNextRoundNumber() {
-       
         $servername = "localhost";
         $username = "root";
         $password = "";
         $database = "rezultati";
         $conn = new mysqli($servername, $username, $password, $database);
-
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
