@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="style_insert.css">
     <script src="js.js"></script>
 </head>
-
 <body>
 <img class="logo1" src="Images/logoANG.png" alt="">
 <nav>
@@ -20,20 +19,20 @@
         <li><a href="index.php" class="nvy">2024/25</a></li>
         <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
         <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-        <li><div class="headerr">
-    <form action="logout.php" method="post">
-        <button type="submit" class="logouttt">Logout</button>
-    </form>
-</div></li>
+        <li>
+            <div class="headerr">
+                <form action="logout.php" method="post">
+                    <button type="submit" class="logouttt">Logout</button>
+                </form>
+            </div>
+        </li>
     </ul>    
 </nav>
-
 <div class="container">
     <h2>Add Match Result</h2>
     <form action="" method="POST">
         <label for="round_number">Round Number:</label><br>
         <input type="number" id="round_number" name="round_number" value="<?php echo getNextRoundNumber(); ?>" required><br><br>
-
         <label for="home_team">Home Team:</label><br>
         <select id="home_team" name="home_team" required>
             <?php
@@ -47,7 +46,6 @@
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-
             $sql = "SELECT team_id, team_name FROM teams";
             $result = $conn->query($sql);
 
@@ -60,22 +58,13 @@
             } else {
                 echo "<option value=\"\">No teams found</option>";
             }
-
-            $conn->close();
             ?>
         </select><br><br>
 
         <label for="away_team">Away Team:</label><br>
         <select id="away_team" name="away_team" required>
             <?php
-            $conn = new mysqli($servername, $username, $password, $database);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
             $result = $conn->query($sql);
-
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $team_id = $row["team_id"];
@@ -85,11 +74,9 @@
             } else {
                 echo "<option value=\"\">No teams found</option>";
             }
-
             $conn->close();
             ?>
         </select><br><br>
-
         <label for="home_team_score">Home Team Score:</label><br>
         <input type="number" id="home_team_score" name="home_team_score" required><br><br>
         
@@ -101,20 +88,19 @@
         
         <button type="submit" name="add_match">Add Match Result</button>
     </form>
-    
+
     <?php
     function getNextRoundNumber() {
+       
         $servername = "localhost";
         $username = "root";
         $password = "";
         $database = "rezultati";
-
         $conn = new mysqli($servername, $username, $password, $database);
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-
         $sql_count_matches = "SELECT COUNT(*) AS total_matches FROM matches";
         $result_count_matches = $conn->query($sql_count_matches);
 
@@ -131,12 +117,12 @@
         } else {
             $next_round_number = 5; 
         }
-
         $conn->close();
         return $next_round_number;
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
         $round_number = $_POST['round_number'];
         $home_team_id = $_POST['home_team'];
         $away_team_id = $_POST['away_team'];
@@ -145,12 +131,9 @@
         $match_datetime = $_POST['match_datetime']; 
 
         $conn = new mysqli($servername, $username, $password, $database);
-
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-
-        
         $sql_max_match_id = "SELECT MAX(match_id) AS max_id FROM matches";
         $result_max_id = $conn->query($sql_max_match_id);
     
@@ -160,27 +143,54 @@
         } else {
             $next_match_id = 1; 
         }
-
         $sql_insert = "INSERT INTO matches (match_id, round_number, home_team_id, away_team_id, home_team_score, away_team_score, match_datetime)
                        VALUES ('$next_match_id', '$round_number', '$home_team_id', '$away_team_id', '$home_team_score', '$away_team_score', '$match_datetime')";
 
         if ($conn->query($sql_insert) === TRUE) {
             echo "New record added successfully";
+
+            
+            updateTeamStats($conn, $home_team_id, $home_team_score, $away_team_score);
+            updateTeamStats($conn, $away_team_id, $away_team_score, $home_team_score);
         } else {
             echo "Error: " . $sql_insert . "<br>" . $conn->error;
         }
 
         $conn->close();
     }
+    function updateTeamStats($conn, $team_id, $team_score, $opponent_score) {
+        $points = getPoints($team_score, $opponent_score);
+        
+        $wins = ($points == 3) ? 1 : 0;
+        $draws = ($points == 1) ? 1 : 0;
+        
+        $sql_update = "UPDATE teams 
+                       SET goals_scored = goals_scored + $team_score,
+                           goals_conceded = goals_conceded + $opponent_score,
+                           points = points + $points,
+                           wins = wins + $wins,
+                           draws = draws + $draws
+                       WHERE team_id = '$team_id'";
+    
+        if ($conn->query($sql_update) !== TRUE) {
+            echo "Error updating team stats: " . $conn->error;
+        }
+    }
+    // Funkcioniranje na poenite
+    function getPoints($team_score, $opponent_score) {
+        if ($team_score > $opponent_score) {
+            return 3; // pobeda
+        } elseif ($team_score == $opponent_score) {
+            return 1; // neresheno
+        } else {
+            return 0; // poraz
+        }
+    }
     ?>
 </div>
-
-
 <footer class="footer">
     All Rights Reserved - 2024 <br>
-    
     <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
 </footer>
-
 </body>
 </html>
