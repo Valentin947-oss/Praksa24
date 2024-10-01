@@ -102,7 +102,7 @@ FROM Teams t
 LEFT JOIN Statisticss s ON t.team_id = s.team_id
 LEFT JOIN Matches m ON t.team_id = m.home_team_id OR t.team_id = m.away_team_id
 GROUP BY t.team_id, t.team_name, t.logo_path, s.wins, s.draws, s.losses
-ORDER BY points DESC, goal_difference DESC;";
+ORDER BY points DESC, goal_difference DESC, goals_conceded DESC;";
 $result = $conn->query($sql);
 $number=1;
 if(!$result)
