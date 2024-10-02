@@ -509,17 +509,6 @@ th {
   }
 }
 
-/* General Styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-nav {
-  background-color: #333; /* Dark background */
-  color: #fff;
-}
-
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -566,7 +555,6 @@ nav {
 .logouttt:hover {
   background-color: #d32f2f; 
 }
-
 
 .hamburger {
   display: none; 
