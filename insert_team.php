@@ -97,19 +97,29 @@ $conn->close();
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
     <nav>
-    <ul>
-        <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
-        <li><a href="AboutUs.html" class="nvy">About Us</a></li>
-        <li><a href="Contact.html" class="nvy">Contact</a></li>
-        <li><a href="index.php" class="nvy">2024/25</a></li>
-        <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
-        <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-        <li><div class="headerr">
-    <form action="logout.php" method="post">
-        <button type="submit" class="logouttt">Logout</button>
-    </form>
-</div></li>
-    </ul>    
+    <div class="nav-container">
+        <div class="logo">
+            <a href="ProektPremierLiga.html" class="nvy"></a> 
+        </div>
+        <ul class="nav-links">
+            <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
+            <li><a href="AboutUs.html" class="nvy">About Us</a></li>
+            <li><a href="Contact.html" class="nvy">Contact</a></li>
+            <li><a href="index.php" class="nvy">2024/25</a></li>
+            <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
+            <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+        </ul>
+        <div class="headerr">
+            <form action="logout.php" method="post">
+                <button type="submit" class="logouttt">Logout</button>
+            </form>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
 </nav>
     <div class="container">
         <h2>Teams</h2>
