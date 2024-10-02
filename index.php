@@ -48,21 +48,32 @@
 </head>
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
-<nav>
-    <ul>
-        <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
-        <li><a href="AboutUs.html" class="nvy">About Us</a></li>
-        <li><a href="Contact.html" class="nvy">Contact</a></li>
-        <li><a href="index.php" class="nvy">2024/25</a></li>
-        <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
-        <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-        <li><div class="headerr">
-    <form action="logout.php" method="post">
-        <button type="submit" class="logouttt">Logout</button>
-    </form>
-</div></li>
-    </ul>    
+    <nav>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="ProektPremierLiga.html" class="nvy"></a> 
+        </div>
+        <ul class="nav-links">
+            <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
+            <li><a href="AboutUs.html" class="nvy">About Us</a></li>
+            <li><a href="Contact.html" class="nvy">Contact</a></li>
+            <li><a href="index.php" class="nvy">2024/25</a></li>
+            <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
+            <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+        </ul>
+        <div class="headerr">
+            <form action="logout.php" method="post">
+                <button type="submit" class="logouttt">Logout</button>
+            </form>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
 </nav>
+
 
 <br>
 <br>
@@ -245,7 +256,7 @@ if ($result->num_rows > 0) {
                 $homeLogoPath = "Images/" . htmlspecialchars($match['home_logo']);
                 $awayLogoPath = "Images/" . htmlspecialchars($match['away_logo']);
                 
-                echo "<p>$formattedDateTime |<br> <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']}
+                echo "<p>$formattedDateTime |<br> <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']} <br>
                 <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$match['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$match['home_team_score']}, {$match['away_team_score']});'>Edit</a>
                 <a href='index.php?action=delete&match_id={$match['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
             </p>";
