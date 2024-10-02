@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="Images/logobrowser.jpg">
     <link rel="stylesheet" href="stylee.css">
     <link rel="stylesheet" href="style_insert.css">
+
     <script src="js.js"></script>
     <style>
         .modal {
@@ -244,10 +245,11 @@ if ($result->num_rows > 0) {
                 $homeLogoPath = "Images/" . htmlspecialchars($match['home_logo']);
                 $awayLogoPath = "Images/" . htmlspecialchars($match['away_logo']);
                 
-                echo "<p>$formattedDateTime | <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']}
+                echo "<p>$formattedDateTime |<br> <img src='$homeLogoPath' alt='Home Logo' style='width: 30px; height: 30px;'> {$match['home_team']} {$match['home_team_score']} - {$match['away_team_score']} <img src='$awayLogoPath' alt='Away Logo' style='width: 30px; height: 30px;'> {$match['away_team']}
                 <a href='javascript:void(0);' class='edit-button' onclick='openMatchModal({$match['match_id']}, \"" . date('Y-m-d\TH:i', $matchDateTime) . "\", {$match['home_team_score']}, {$match['away_team_score']});'>Edit</a>
                 <a href='index.php?action=delete&match_id={$match['match_id']}' class='delete-button' onclick='return confirm(\"Are you sure you want to delete this match?\");'>Delete</a>
             </p>";
+
             }
         } else {
             echo "<p>No matches for this week.</p>";
