@@ -551,11 +551,11 @@ nav {
 }
 
 .nav-links a:hover {
-  color: hsl(200, 100%, 75%); /* Change color on hover */
+  color: hsl(200, 100%, 75%);
 }
 
 .logouttt {
-  background-color: #f44336; /* Red background */
+  background-color: #f44336; 
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -564,12 +564,12 @@ nav {
 }
 
 .logouttt:hover {
-  background-color: #d32f2f; /* Darker red on hover */
+  background-color: #d32f2f; 
 }
 
-/* Hamburger Menu */
+
 .hamburger {
-  display: none; /* Hide hamburger by default */
+  display: none; 
   flex-direction: column;
   cursor: pointer;
 }
@@ -582,7 +582,7 @@ nav {
   transition: all 0.3s;
 }
 
-/* Responsive Styles */
+
 @media (max-width: 768px) {
   .nav-links {
       position: absolute;
@@ -596,10 +596,10 @@ nav {
   }
 
   .nav-links.active {
-      left: 0; /* Slide in menu */
+      left: 0; 
   }
 
   .hamburger {
-      display: flex; /* Show hamburger menu */
+      display: flex; 
   }
 }
