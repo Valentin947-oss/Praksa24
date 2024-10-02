@@ -481,3 +481,30 @@ th {
 .logout:hover {
   background-color: #c9302c; 
 }
+.match-item {
+  display: flex;
+  justify-content: space-between; 
+  margin-bottom: 10px; 
+}
+
+.button-group {
+  display: flex; 
+  gap: 10px; 
+}
+
+
+@media (max-width: 500px) {
+  .match-item {
+      flex-direction: column; 
+      align-items: flex-start; 
+  }
+
+  .match-details {
+      margin-bottom: 5px; 
+  }
+
+  .button-group {
+      width: 100%; 
+      justify-content: flex-start; 
+  }
+}
