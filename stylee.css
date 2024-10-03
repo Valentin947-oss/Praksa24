@@ -118,44 +118,6 @@ th {
     display: inline-block;
   }
   
-  nav {
-    background-color: #5ca2e49a;
-    padding: 10px 0;
-    position: relative;
-    top: -110px;
-    border-radius: 5px;
-    cursor: pointer;
-    
-  }
-  
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: right;
-  }
-  
-  li {
-    display: inline-block;
-    margin-right: 20px;
-  }
-  
-  li:last-child {
-    margin-right: 0;
-  }
-  
-  .nvy {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 5px 10px;
-  }
-  
-  .nvy:hover {
-    background-color: #ddd7d7;
-    border-radius: 8px;
-    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
-  }
  
   .footer {
         background-color: #333; 
