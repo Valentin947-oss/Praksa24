@@ -117,7 +117,44 @@ th {
     border-collapse: collapse;
     display: inline-block;
   }
+  nav {
+    background-color: #5ca2e49a;
+    padding: 10px 0;
+    position: relative;
+    top: -110px;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
   
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+  
+  li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  li:last-child {
+    margin-right: 0;
+  }
+  
+  .nvy {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 5px 10px;
+  }
+  
+  .nvy:hover {
+    background-color: #ddd7d7;
+    border-radius: 8px;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
  
   .footer {
         background-color: #333; 
@@ -533,40 +570,51 @@ th {
 }
 
 nav {
-    background-color: #5ca2e49a;
-    padding: 10px 0;
-    position: relative;
-    top: -110px;
-    border-radius: 5px;
-    cursor: pointer;
-    
+  background-color: #5ca2e49a;
+  padding: 10px 0;
+  position: relative;
+  top: -110px;
+  border-radius: 5px;
+}
+
+/* Responsive styles */
+@media (max-width: 400px) {
+  .nav-links {
+    display: none; 
+    flex-direction: column; 
+    position: absolute;
+    top: 60px;
+    right: 0; 
+    background-color: #5ca2e49a; 
+    width: 100%; 
   }
-  
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: right;
+
+  .nav-links.active {
+    display: flex; 
   }
-  
-  li {
-    display: inline-block;
-    margin-right: 20px;
+
+  .hamburger {
+    display: flex; 
   }
-  
-  li:last-child {
-    margin-right: 0;
+
+  .hamburger.active span {
+    background-color: #5ca2e49a; 
   }
-  
-  .nvy {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 5px 10px;
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    flex-direction: column; 
+    align-items: flex-start; 
   }
-  
-  .nvy:hover {
-    background-color: #ddd7d7;
-    border-radius: 8px;
-    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  .nav-links {
+    width: 100%; 
   }
+
+  .nav-links a {
+    padding: 10px; 
+    text-align: center; 
+    width: 100%; 
+  }
+}
