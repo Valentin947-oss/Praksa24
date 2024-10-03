@@ -74,7 +74,6 @@
     </div>
 </nav>
 
-
 <br>
 <br>
     <h1 class="naslov24-25">Results so far season 2024/25</h1>
