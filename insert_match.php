@@ -163,32 +163,44 @@
 
         $conn->close();
     }
-    function updateTeamStats($conn, $team_id, $team_score, $opponent_score) {
-        $points = getPoints($team_score, $opponent_score);
-        
-        $wins = ($points == 3) ? 1 : 0;
-        $draws = ($points == 1) ? 1 : 0;
-        
-        $sql_update = "UPDATE teams 
-                       SET goals_scored = goals_scored + $team_score,
-                           goals_conceded = goals_conceded + $opponent_score,
-                           points = points + $points,
-                           wins = wins + $wins,
-                           draws = draws + $draws
-                       WHERE team_id = '$team_id'";
+    function updateStats($conn, $team_id, $team_score, $opponent_score) {
+        // Determine if it's a win, loss, or draw
+        if ($team_score > $opponent_score) {
+            $wins = 1;
+            $losses = 0;
+            $draws = 0;
+        } elseif ($team_score < $opponent_score) {
+            $wins = 0;
+            $losses = 1;
+            $draws = 0;
+        } else {
+            $wins = 0;
+            $losses = 0;
+            $draws = 1;
+        }
+    
+        // Update or insert the statistics for the team
+        $sql_update = "INSERT INTO statisticss (team_id, wins, losses, draws, points)
+                       VALUES ('$team_id', '$wins', '$losses', '$draws', '".getPoints($team_score, $opponent_score)."')
+                       ON DUPLICATE KEY UPDATE
+                       wins = wins + $wins,
+                       losses = losses + $losses,
+                       draws = draws + $draws,
+                       points = points + ".getPoints($team_score, $opponent_score).";";
     
         if ($conn->query($sql_update) !== TRUE) {
-            echo "Error updating team stats: " . $conn->error;
+            echo "Error updating statistics: " . $conn->error;
         }
     }
-    // Funkcioniranje na poenite
+    
+    // Function to calculate points
     function getPoints($team_score, $opponent_score) {
         if ($team_score > $opponent_score) {
-            return 3; // pobeda
+            return 3; // Win
         } elseif ($team_score == $opponent_score) {
-            return 1; // neresheno
+            return 1; // Draw
         } else {
-            return 0; // poraz
+            return 0; // Loss
         }
     }
     ?>
