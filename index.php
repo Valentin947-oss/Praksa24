@@ -49,30 +49,25 @@
 <body>
     <img class="logo1" src="Images/logoANG.png" alt="">
     <nav>
-    <div class="nav-container">
-        <div class="logo">
-            <a href="ProektPremierLiga.html" class="nvy"></a> 
-        </div>
-        <ul class="nav-links">
-            <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
-            <li><a href="AboutUs.html" class="nvy">About Us</a></li>
-            <li><a href="Contact.html" class="nvy">Contact</a></li>
-            <li><a href="index.php" class="nvy">2024/25</a></li>
-            <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
-            <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
-        </ul>
-        <div class="headerr">
-            <form action="logout.php" method="post">
-                <button type="submit" class="logouttt">Logout</button>
-            </form>
-        </div>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
-</nav>
+      <div class="nav-container">
+          <div class="logo">
+              <a href="ProektPremierLiga.html" class="nvy"></a> 
+          </div>
+          <ul class="nav-links">
+              <li><a href="ProektPremierLiga.html" class="nvy">Home</a></li>
+              <li><a href="AboutUs.html" class="nvy">About Us</a></li>
+              <li><a href="Contact.html" class="nvy">Contact</a></li>
+              <li><a href="index.php" class="nvy">2024/25</a></li>
+              <li><a href="insert_match.php" class="nvy">Insert Match</a></li>
+              <li><a href="insert_team.php" class="nvy">Insert Team</a></li>
+          </ul>
+          <div class="headerr">
+              <form action="logout.php" method="post">
+                  <button type="submit" class="logouttt">Logout</button>
+              </form>
+          </div>
+      </div>
+  </nav>
 
 <br>
 <br>
@@ -108,7 +103,7 @@ $sql = "SELECT
         ELSE CONCAT('-', ABS(SUM(CASE WHEN m.home_team_id = t.team_id THEN m.home_team_score ELSE m.away_team_score END)
                           - SUM(CASE WHEN m.home_team_id = t.team_id THEN m.away_team_score ELSE m.home_team_score END)))
     END AS goal_difference,
-    COALESCE(s.wins, 0) * 3 + COALESCE(s.draws, 0) AS points
+    COALESCE(s.wins, 1) * 3 + COALESCE(s.draws, 1) AS points
 FROM Teams t
 LEFT JOIN Statisticss s ON t.team_id = s.team_id
 LEFT JOIN Matches m ON t.team_id = m.home_team_id OR t.team_id = m.away_team_id
@@ -273,11 +268,35 @@ if ($result->num_rows > 0) {
 }
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_id'])) {
     $match_id = $_GET['match_id'];
+
+    $stmt = $conn->prepare("SELECT home_team_id, away_team_id, home_team_score, away_team_score FROM Matches WHERE match_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $match_id);
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($home_team_id, $away_team_id, $home_team_score, $away_team_score);
+            $stmt->fetch();
+        } else {
+            echo "Match not found.";
+            $stmt->close();
+            exit;
+        }
+        $stmt->close();
+    } else {
+        echo "Error preparing statement: " . $conn->error;
+        exit;
+    }
     $stmt = $conn->prepare("DELETE FROM Matches WHERE match_id = ?");
     if ($stmt) {
         $stmt->bind_param("i", $match_id);
         if ($stmt->execute()) {
-            //echo '<script>alert("Match deleted successfully");</script>';
+            
+            echo "Match deleted successfully";
+
+            updateTeamStatsAfterDeletion($conn, $home_team_id, $home_team_score, $away_team_score);
+            updateTeamStatsAfterDeletion($conn, $away_team_id, $away_team_score, $home_team_score);
         } else {
             echo "Error deleting match: " . $stmt->error;
         }
@@ -286,15 +305,49 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_
         echo "Error preparing statement: " . $conn->error;
     }
 }
+function updateTeamStatsAfterDeletion($conn, $team_id, $home_team_score, $away_team_score) {
+   
+    $sql = "SELECT wins, draws, losses, points FROM team_stats WHERE team_id = '$team_id'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        
+        // Initialize stats
+        $wins = $row['wins'];
+        $draws = $row['draws'];
+        $losses = $row['losses'];
+        $points = $row['points'];
+
+        if ($home_team_score > $away_team_score) {
+            $wins--; 
+            $points -= 3; 
+        } elseif ($home_team_score < $away_team_score) {
+            $losses--; 
+        } else {
+            $draws--;  
+            $points--;  
+        }
+        // Update the database
+        $sql_update = "UPDATE team_stats SET wins = '$wins', draws = '$draws', losses = '$losses', points = '$points' WHERE team_id = '$team_id'";
+        if ($conn->query($sql_update) === FALSE) {
+            echo "Error updating stats: " . $conn->error;
+        }
+    } else {
+        echo "No stats found for team ID: $team_id";
+    }
+}
 
 if (isset($_POST['edit_match_button'])) {
     $match_id = $_POST['match_id'];
     $home_team_score = $_POST['home_score'];
     $away_team_score = $_POST['away_score'];
     $match_datetime = $_POST['match_datetime'];
+   
      if (filter_var($match_id, FILTER_VALIDATE_INT) && 
         filter_var($home_team_score, FILTER_VALIDATE_INT) && 
         filter_var($away_team_score, FILTER_VALIDATE_INT) && 
+        
         !empty($match_datetime)) {
         
         $sql = "UPDATE Matches SET home_team_score = ?, away_team_score = ?, match_datetime = ? WHERE match_id = ?";
@@ -313,6 +366,36 @@ if (isset($_POST['edit_match_button'])) {
         }
     } else {
         echo "Invalid input.";
+    }
+}
+function updateTeamStats($conn, $team_id, $team_score, $opponent_score) {
+    $sql = "SELECT wins, draws, losses, points FROM team_stats WHERE team_id = '$team_id'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+
+        $wins = $row['wins'];
+        $draws = $row['draws'];
+        $losses = $row['losses'];
+        $points = $row['points'];
+
+        if ($team_score > $opponent_score) {
+            $wins++;
+            $points += 3;
+        } elseif ($team_score < $opponent_score) {
+            $losses++;
+        } else {
+            $draws++;
+            $points++;
+        }
+
+        $sql_update = "UPDATE team_stats SET wins = '$wins', draws = '$draws', losses = '$losses', points = '$points' WHERE team_id = '$team_id'";
+        if ($conn->query($sql_update) === FALSE) {
+            echo "Error updating stats: " . $conn->error;
+        }
+    } else {
+    
+        echo "No stats found for team ID: $team_id";
     }
 }
 $conn->close();
