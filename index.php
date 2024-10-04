@@ -300,7 +300,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['match_
         } else {
             echo "Error deleting match: " . $stmt->error;
         }
-        $stmt->close();
+        
     } else {
         echo "Error preparing statement: " . $conn->error;
     }
